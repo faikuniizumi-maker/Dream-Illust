@@ -131,6 +131,7 @@
     z-index: 2;
     position: relative;
     gap: 2.5rem;
+    margin: 0 auto;
   }
 
   /* Top banner (separate from paper) */
@@ -296,54 +297,37 @@
      MOBILE (tablet)
   ══════════════════════════ */
   @media(max-width:768px) {
-    .page { min-height:100vh; }
-    .page-content { padding:1.6rem 1rem; max-width:90vw; gap:2rem; }
-    .page-banner { margin-bottom:0.3rem; }
+    .page { min-height:100vh; padding: 0; }
+    .page-content { padding:1.5rem 0.8rem; max-width:100%; gap:1.8rem; }
+    .page-banner { margin-bottom:0; }
     .torn-menu { width:50px; height:40px; }
-    .banner-text { font-size:1rem; letter-spacing:0.2em; }
-    .banner-sub { font-size:0.8rem; letter-spacing:0.25em; }
-    .banner { padding:0.4rem 1.4rem; }
-    .hero-tagline { font-size:0.85rem; }
-    .hero-cta { font-size:0.62rem; padding:0.4rem 1.4rem; }
-    .team-grid { grid-template-columns:repeat(2,1fr); gap:1rem; }
-    .info-grid { grid-template-columns:1fr; gap:0.8rem; }
-    .paper { padding:1.8rem 1.2rem; gap:1.2rem; }
-    .about-text { font-size:0.86rem; line-height:1.75; margin-bottom:0.7rem; }
-    .member-portrait { width:60px; height:60px; }
-    .info-box { padding:0.8rem 0.9rem; }
-    #page-dots { gap:6px; right:0.8rem; }
+    .banner { padding:0.4rem 1.2rem; }
+    .banner-text { font-size:1rem; }
+    .banner-sub { font-size:0.8rem; }
+    .paper { padding:1.6rem 1rem; gap:1rem; width:calc(100% - 2rem); }
+    .about-text { font-size:0.85rem; line-height:1.7; margin-bottom:0.6rem; }
+    .team-grid { gap:0.8rem; }
+    .info-box { padding:0.7rem 0.8rem; }
   }
 
   /* ══════════════════════════
      MOBILE (small phone)
   ══════════════════════════ */
   @media(max-width:480px) {
-    .page { min-height:100vh; width:100vw; }
-    .page-content { padding:1.3rem 0.85rem; max-width:95vw; gap:1.6rem; }
-    .page-banner { margin-bottom:0.2rem; }
-    .torn-menu { width:48px; height:38px; top:1%; right:1%; }
-    .torn-menu .dot { width:3px; height:3px; }
-    #page-dots { display:none; }
-    .banner-text { font-size:0.85rem; letter-spacing:0.15em; }
-    .banner-sub { font-size:0.68rem; letter-spacing:0.2em; }
-    .banner { padding:0.3rem 1rem; }
-    .hero-center { gap:1.2rem; }
-    .hero-tagline { font-size:0.78rem; }
-    .hero-cta { font-size:0.55rem; padding:0.33rem 1.2rem; }
-    .nav-link { font-size:0.95rem; gap:0.4rem; }
-    .nav-link .br { font-size:1.1rem; }
-    .about-text { font-size:0.8rem; line-height:1.7; margin-bottom:0.6rem; }
-    .team-grid { grid-template-columns:repeat(2,1fr); gap:0.8rem; }
-    .member-portrait { width:54px; height:54px; }
-    .member-name { font-size:0.65rem; }
-    .member-role { font-size:0.65rem; }
-    .info-grid { grid-template-columns:1fr; gap:0.7rem; }
-    .info-box { padding:0.65rem 0.8rem; }
-    .info-row { font-size:0.8rem; }
-    .logo-box { min-height:70px; font-size:0.63rem; }
-    .paper { padding:1.4rem 1rem; gap:1rem; }
-    .label-box { font-size:0.56rem; padding:0.1rem 0.6rem; }
-    .close-btn { font-size:1.2rem; top:0.8rem; right:0.8rem; }
+    .page { min-height:100vh; width:100vw; padding:0; overflow-x:hidden; }
+    .page-content { padding:1.2rem 0.7rem; max-width:100%; gap:1.4rem; }
+    .page-banner { margin-bottom:0; }
+    .torn-menu { width:48px; height:38px; }
+    .banner { padding:0.3rem 0.9rem; }
+    .banner-text { font-size:0.8rem; }
+    .banner-sub { font-size:0.65rem; }
+    .paper { padding:1.3rem 0.8rem; gap:0.9rem; width:calc(100% - 1.6rem); }
+    .about-text { font-size:0.75rem; line-height:1.65; margin-bottom:0.5rem; }
+    .team-grid { gap:0.6rem; }
+    .member-portrait { width:52px; height:52px; }
+    .info-box { padding:0.6rem 0.7rem; }
+    .info-row { font-size:0.75rem; }
+    .logo-box { min-height:60px; font-size:0.6rem; }
   }
 </style>
 </head>
