@@ -20,9 +20,6 @@
     overflow-x: hidden;
   }
 
-  /* ══════════════════════════
-     PAGES — stacked vertically
-  ══════════════════════════ */
   .page {
     position: relative;
     width: 100%;
@@ -36,35 +33,34 @@
       linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
     background-size: 28px 28px;
     overflow: hidden;
-    padding-top: 50px;
+    padding-top: 65px;
   }
 
-  /* Decorative theater swag - FIXED at top */
+  /* Decorative swag - PROMINENT (red with gold curves, in FRONT) */
   #stage-swag {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 50px;
-    background: linear-gradient(180deg, #c4a747 0%, #d4b756 3%, #8B1212 8%, #8B1212 92%, #d4b756 97%, #c4a747 100%);
+    height: 65px;
+    background: linear-gradient(180deg, #8B1212 0%, #8B1212 85%, #d4b756 85%, #d4b756 100%);
     clip-path: polygon(
-      0 100%, 1% 92%, 2% 85%, 3% 78%, 4% 72%, 5% 65%, 6% 58%, 7% 50%, 8% 40%, 9% 30%, 10% 20%, 11% 15%, 12% 12%, 
-      15% 8%, 18% 5%, 22% 2%, 25% 0%, 28% 2%, 32% 5%, 35% 8%, 38% 12%, 40% 15%, 42% 20%, 45% 30%, 48% 40%, 50% 50%, 
-      52% 40%, 55% 30%, 58% 20%, 60% 15%, 62% 12%, 65% 8%, 68% 5%, 72% 2%, 75% 0%, 78% 2%, 82% 5%, 85% 8%, 88% 12%, 
-      89% 15%, 90% 20%, 91% 30%, 92% 40%, 93% 50%, 94% 58%, 95% 65%, 96% 72%, 97% 78%, 98% 85%, 99% 92%, 100% 100%
+      0 0%, 1% 5%, 2% 10%, 3% 15%, 4% 20%, 5% 24%, 6% 28%, 7% 32%, 8% 35%, 9% 38%, 10% 40%, 11% 42%, 12% 43%, 
+      15% 44%, 18% 45%, 22% 46%, 25% 46%, 28% 45%, 32% 44%, 35% 43%, 38% 42%, 40% 40%, 42% 38%, 45% 35%, 48% 32%, 50% 28%, 
+      52% 32%, 55% 35%, 58% 38%, 60% 40%, 62% 42%, 65% 43%, 68% 44%, 72% 45%, 75% 46%, 78% 45%, 82% 44%, 85% 43%, 88% 42%, 
+      89% 40%, 90% 38%, 91% 35%, 92% 32%, 93% 28%, 94% 24%, 95% 20%, 96% 15%, 97% 10%, 98% 5%, 99% 2%, 100% 0%
     );
-    z-index: 98;
+    z-index: 110;
     pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   }
 
-  /* Each page has its own pair of curtains */
   .curtain-left, .curtain-right {
     position: absolute;
     top: 0; bottom: 0;
-    width: 25%;
+    width: 20%;
     z-index: 100;
     pointer-events: none;
-    will-change: transform;
     overflow: hidden;
   }
 
@@ -83,6 +79,13 @@
       rgba(255,255,255,0.04) 32px, rgba(255,255,255,0.04) 34px,
       transparent      34px,  transparent      48px
     );
+    clip-path: polygon(
+      0 0, 100% 0, 100% 100%,
+      96% 96%, 90% 100%, 84% 95%, 78% 100%,
+      72% 95%, 66% 100%, 60% 95%, 54% 100%,
+      48% 95%, 42% 100%, 36% 95%, 30% 100%,
+      24% 95%, 18% 100%, 12% 95%, 6% 100%, 0 95%
+    );
   }
   .curtain-right {
     right: 0;
@@ -99,19 +102,6 @@
       rgba(255,255,255,0.04) 32px, rgba(255,255,255,0.04) 34px,
       transparent      34px,  transparent      48px
     );
-  }
-
-  /* Wavy bottom on curtains */
-  .curtain-left {
-    clip-path: polygon(
-      0 0, 100% 0, 100% 100%,
-      96% 96%, 90% 100%, 84% 95%, 78% 100%,
-      72% 95%, 66% 100%, 60% 95%, 54% 100%,
-      48% 95%, 42% 100%, 36% 95%, 30% 100%,
-      24% 95%, 18% 100%, 12% 95%, 6% 100%, 0 95%
-    );
-  }
-  .curtain-right {
     clip-path: polygon(
       0 0, 100% 0, 100% 95%,
       94% 100%, 88% 95%, 82% 100%, 76% 95%,
@@ -121,7 +111,6 @@
     );
   }
 
-  /* Tie-back clips */
   .curtain-left::after, .curtain-right::after {
     content: '';
     position: absolute;
@@ -135,16 +124,10 @@
   .curtain-left::after  { right: -6px; }
   .curtain-right::after { left:  -6px; }
 
-  .curtain-left  { transform: translateX(-64%); }
-  .curtain-right { transform: translateX( 64%); }
-
-  /* ══════════════════════════
-     PAGE CONTENT
-  ══════════════════════════ */
   .page-content {
     width: 100%;
     max-width: 750px;
-    padding: 2rem 1.5rem;
+    padding: 2rem 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -154,9 +137,6 @@
     margin: 0 auto;
   }
 
-  /* ══════════════════════════
-     PAPER — main content box
-  ══════════════════════════ */
   .paper {
     position: relative;
     z-index: 10;
@@ -170,9 +150,6 @@
     gap: 1.5rem;
   }
 
-  /* ══════════════════════════
-     BANNER — separated top element
-  ══════════════════════════ */
   .banner {
     position: relative;
     display: inline-flex;
@@ -197,12 +174,9 @@
   .banner-text { font-family:'Special Elite',serif; font-size:1.4rem; letter-spacing:0.3em; line-height:1.1; text-align:center; color:var(--ink); font-weight:500; }
   .banner-sub  { font-size:1rem; letter-spacing:0.4em; color:#555; margin-top:0.2rem; }
 
-  /* ══════════════════════════
-     HERO
-  ══════════════════════════ */
   .hero-center {
     position: relative;
-    z-index: 30;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -225,21 +199,17 @@
   }
   .hero-cta:hover { background:var(--cream); color:#5a0a0a; }
 
-  /* ══════════════════════════
-     TEXT CONTENT
-  ══════════════════════════ */
   .about-text { font-size:0.95rem; line-height:1.9; color:#333; text-align:justify; margin-bottom:0.9rem; }
 
   .team-grid { display:grid; grid-template-columns:repeat(2,minmax(120px,140px)); gap:1.5rem; margin-bottom:1.5rem; justify-content:center; }
-  .member-card { display:flex; flex-direction:column; align-items:center; gap:0.4rem; border:1.5px solid #bbb; padding:0.8rem 0.6rem; background:rgba(255,255,255,0.5); transition:transform 0.2s; }
-  .member-card:hover { transform:translateY(-3px); }
+  .member-card { display:flex; flex-direction:column; align-items:center; gap:0.4rem; border:1.5px solid #bbb; padding:0.8rem 0.6rem; background:rgba(255,255,255,0.5); }
   .member-portrait { width:64px; height:64px; border:1.5px solid #aaa; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#ede8dc; }
   .member-portrait svg { width:40px; height:40px; opacity:0.4; }
   .member-name { font-family:'Special Elite',serif; font-size:0.75rem; letter-spacing:0.08em; color:#444; border-top:1px dashed #ccc; width:100%; padding-top:0.25rem; text-align:center; }
   .member-role { font-size:0.75rem; color:#777; text-align:center; }
 
   .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.2rem; }
-  .info-box { border:1.5px solid #bbb; padding:0.9rem 1rem; background:rgba(255,255,255,0.5); display:flex; flex-direction:column; gap:0.3rem; }
+  .info-box { border:1.5px solid #bbb; padding:0.9rem 1rem; background:rgba(255,255,255,0.5); }
   .info-box-title { font-family:'Special Elite',serif; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#888; border-bottom:1px solid #ddd; padding-bottom:0.25rem; }
   .info-row { display:flex; align-items:center; gap:0.3rem; font-size:0.9rem; color:#444; border-bottom:1px solid #eee; padding-bottom:0.2rem; }
   .info-row span.lbl { font-family:'Special Elite',serif; font-size:0.65rem; color:#999; min-width:40px; }
@@ -247,9 +217,6 @@
   .label-box { border:1.5px solid #aaa; padding:0.2rem 1rem; font-family:'Special Elite',serif; font-size:0.65rem; letter-spacing:0.15em; color:#555; text-transform:uppercase; }
   .sec-label { margin-top:1rem; display:flex; justify-content:center; }
 
-  /* ══════════════════════════
-     3-DOT TORN PAPER
-  ══════════════════════════ */
   .torn-menu {
     position: fixed;
     top: 1.5%; right: 1.5%;
@@ -260,14 +227,9 @@
     display: flex; align-items: center; justify-content: center; gap: 3px;
     clip-path: polygon(8% 0%,30% 4%,55% 0%,78% 5%,100% 0%,97% 25%,100% 55%,95% 80%,100% 100%,70% 95%,45% 100%,22% 96%,0% 100%,3% 72%,0% 45%,4% 20%);
     box-shadow: 2px 3px 10px rgba(0,0,0,0.4);
-    transition: transform 0.15s;
   }
-  .torn-menu:hover { transform:scale(1.08); }
-  .torn-menu .dot { width:4px; height:4px; background:#555; border-radius:50%; flex-shrink:0; }
+  .torn-menu .dot { width:4px; height:4px; background:#555; border-radius:50%; }
 
-  /* ══════════════════════════
-     NAV OVERLAY
-  ══════════════════════════ */
   .nav-overlay {
     position: fixed; inset:0; z-index:9999;
     background: rgba(5,2,2,0.96);
@@ -276,14 +238,10 @@
   }
   .nav-overlay.open { opacity:1; pointer-events:all; }
   .close-btn { position:absolute; top:1rem; right:1rem; background:none; border:none; color:var(--cream); font-size:1.4rem; cursor:pointer; opacity:0.6; }
-  .close-btn:hover { opacity:1; }
-  .nav-link { display:flex; align-items:center; gap:0.5rem; font-family:'Special Elite',serif; font-size:1.2rem; letter-spacing:0.12em; color:#d4bfa0; text-decoration:none; text-transform:lowercase; transition:color 0.2s, transform 0.2s; }
-  .nav-link:hover { color:#fff; transform:scale(1.04); }
-  .nav-link .br { color:#8a6a40; font-size:1.4rem; line-height:1; }
+  .nav-link { display:flex; align-items:center; gap:0.5rem; font-family:'Special Elite',serif; font-size:1.2rem; letter-spacing:0.12em; color:#d4bfa0; text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:#fff; }
+  .nav-link .br { color:#8a6a40; font-size:1.4rem; }
 
-  /* ══════════════════════════
-     PAGE DOTS
-  ══════════════════════════ */
   #page-dots {
     position: fixed;
     right: 1rem; top: 50%;
@@ -300,7 +258,6 @@
   }
   .pdot.active { background: var(--cream); transform: scale(1.3); }
 
-  /* Footer */
   footer {
     position:relative; width:100%; z-index:50;
     background:#0a0202; text-align:center; padding:0.4rem 1rem;
@@ -308,68 +265,38 @@
     color:rgba(245,239,227,0.15); border-top:1px solid rgba(139,18,18,0.25);
   }
 
-  /* ══════════════════════════
-     MOBILE (tablet)
-  ══════════════════════════ */
   @media(max-width:768px) {
-    #stage-swag { height:40px; }
-    .page { padding-top:40px; }
-    .page-content { padding:1.6rem 1rem; max-width:100%; gap:1.8rem; }
+    .page { padding-top:50px; }
+    .curtain-left, .curtain-right { width: 12%; }
+    .page-content { padding:1.6rem 2rem; max-width:100%; gap:1.8rem; }
     .torn-menu { width:50px; height:40px; }
     .banner { padding:0.4rem 1.2rem; }
     .banner-text { font-size:1rem; }
-    .banner-sub { font-size:0.8rem; }
-    .hero-tagline { font-size:0.85rem; }
-    .hero-cta { font-size:0.62rem; padding:0.4rem 1.4rem; }
-    .team-grid { gap:1rem; }
     .paper { padding:1.8rem 1.2rem; gap:1.2rem; }
-    .about-text { font-size:0.88rem; line-height:1.75; margin-bottom:0.7rem; }
-    .member-portrait { width:60px; height:60px; }
-    .info-box { padding:0.8rem 0.9rem; }
-    #page-dots { gap:6px; right:0.8rem; }
+    .about-text { font-size:0.88rem; line-height:1.75; }
   }
 
-  /* ══════════════════════════
-     MOBILE (small phone)
-  ══════════════════════════ */
   @media(max-width:480px) {
-    #stage-swag { height:35px; }
-    .page { width:100%; min-height:100vh; padding:0; overflow-x:hidden; padding-top:35px; }
-    .page-content { padding:1.3rem 0.9rem; max-width:100%; gap:1.5rem; }
+    .page { width:100%; min-height:100vh; padding:0; overflow-x:hidden; padding-top:50px; }
+    .curtain-left, .curtain-right { width: 6%; }
+    .page-content { padding:1.3rem 1.5rem; max-width:100%; gap:1.5rem; }
     .torn-menu { width:48px; height:38px; }
     .banner { padding:0.3rem 1rem; }
     .banner-text { font-size:0.85rem; }
-    .banner-sub { font-size:0.68rem; }
-    .hero-center { gap:1.2rem; }
-    .hero-tagline { font-size:0.78rem; }
-    .hero-cta { font-size:0.55rem; padding:0.33rem 1.2rem; }
-    .nav-link { font-size:0.95rem; }
-    .about-text { font-size:0.8rem; line-height:1.68; margin-bottom:0.6rem; }
-    .team-grid { grid-template-columns:repeat(2,1fr); gap:0.8rem; }
-    .member-portrait { width:54px; height:54px; }
-    .member-name { font-size:0.68rem; }
-    .member-role { font-size:0.68rem; }
-    .info-grid { grid-template-columns:1fr; }
-    .info-box { padding:0.7rem 0.8rem; }
-    .info-row { font-size:0.8rem; }
-    .logo-box { min-height:70px; font-size:0.63rem; }
+    .about-text { font-size:0.8rem; line-height:1.68; }
     .paper { padding:1.5rem 1.1rem; gap:0.9rem; }
-    .label-box { font-size:0.6rem; padding:0.12rem 0.8rem; }
     #page-dots { display:none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Decorative theater swag - FIXED at top -->
 <div id="stage-swag"></div>
 
-<!-- 3-dot menu -->
 <div class="torn-menu" id="tornMenu">
   <span class="dot"></span><span class="dot"></span><span class="dot"></span>
 </div>
 
-<!-- Nav overlay -->
 <div class="nav-overlay" id="navOverlay">
   <button class="close-btn" id="navClose">&times;</button>
   <a href="#page-hero" class="nav-link"><span class="br">[</span>&nbsp;home&nbsp;<span class="br">]</span></a>
@@ -378,17 +305,13 @@
   <a href="#page-info" class="nav-link"><span class="br">[</span>&nbsp;contact&nbsp;<span class="br">]</span></a>
 </div>
 
-<!-- Page dots -->
 <div id="page-dots">
-  <div class="pdot active" data-idx="0"></div>
-  <div class="pdot" data-idx="1"></div>
-  <div class="pdot" data-idx="2"></div>
-  <div class="pdot" data-idx="3"></div>
+  <div class="pdot active"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
 </div>
 
-<!-- PAGES (scrollable stack) -->
-
-<!-- HOME -->
 <div class="page" id="page-hero">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
@@ -404,7 +327,6 @@
   </div>
 </div>
 
-<!-- ABOUT -->
 <div class="page" id="page-about">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
@@ -422,7 +344,6 @@
   </div>
 </div>
 
-<!-- TEAM -->
 <div class="page" id="page-team">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
@@ -446,7 +367,6 @@
   </div>
 </div>
 
-<!-- INFO -->
 <div class="page" id="page-info">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
@@ -471,7 +391,7 @@
             <div class="info-box-title">Location</div>
             <div class="info-row" style="border:none;">Cavite, Philippines</div>
           </div>
-          <div class="logo-box">INSERT<br>LOGO<br>HERE</div>
+          <div class="logo-box">INSERT LOGO HERE</div>
         </div>
       </div>
       <div class="sec-label"><div class="label-box">Information</div></div>
@@ -479,104 +399,99 @@
   </div>
 </div>
 
-<footer>© Dream Illust. &nbsp;·&nbsp; Cavite, Philippines &nbsp;·&nbsp; All rights reserved</footer>
+<footer>© Dream Illust. · Cavite, Philippines · All rights reserved</footer>
 
 <script>
-const pages    = Array.from(document.querySelectorAll('.page'));
-const dots     = Array.from(document.querySelectorAll('.pdot'));
-const OPEN     = 64;
-const NUMPAGES = pages.length;
+const pages = document.querySelectorAll('.page');
+const dots = document.querySelectorAll('.pdot');
+const OPEN = 100;
 
 function setCurtainsForPage(pageElement, closedness) {
   const cL = pageElement.querySelector('.curtain-left');
   const cR = pageElement.querySelector('.curtain-right');
   if (!cL || !cR) return;
   
-  const pct = OPEN * (1 - closedness);
-  cL.style.transform = `translateX(${-pct}%)`;
-  cR.style.transform = `translateX(${pct}%)`;
+  closedness = Math.max(0, Math.min(1, closedness));
+  const pct = OPEN * closedness;
+  
+  // Curtains move TOWARDS CENTER as closedness increases
+  cL.style.transform = `translateX(${pct}%)`;   // Left moves RIGHT towards center
+  cR.style.transform = `translateX(${-pct}%)`;  // Right moves LEFT towards center
 }
 
 function updateCurtains() {
-  const scrollY = window.scrollY || window.pageYOffset;
+  const scrollY = window.scrollY || 0;
   const pageHeight = window.innerHeight;
-  
   const pageNum = Math.floor(scrollY / pageHeight);
   const fracInPage = (scrollY % pageHeight) / pageHeight;
   
-  pages.forEach(p => setCurtainsForPage(p, 1));
-  
-  if (pageNum < NUMPAGES) {
-    let closedness;
-    if (fracInPage < 0.5) {
-      closedness = 0.5 + (fracInPage / 0.5) * 0.5;
+  pages.forEach((page, i) => {
+    if (i === pageNum) {
+      // CURRENT PAGE: Open (0) → Fully Close (1) → Open (0.5)
+      let closedness;
+      if (fracInPage < 0.5) {
+        // First half: 0.5 → 1 (closing)
+        closedness = 0.5 + (fracInPage * 1);  
+      } else {
+        // Second half: 1 → 0.5 (opening for next)
+        closedness = Math.max(0.5, 1 - ((fracInPage - 0.5) * 1));  
+      }
+      setCurtainsForPage(page, closedness);
+    } else if (i === pageNum + 1) {
+      // NEXT PAGE: Closed (1) → Open (0.5)
+      let closedness;
+      if (fracInPage < 0.5) {
+        // First half: stay fully closed (1)
+        closedness = 1;
+      } else {
+        // Second half: 1 → 0.5 (opening)
+        closedness = Math.max(0.5, 1 - ((fracInPage - 0.5) * 1));  
+      }
+      setCurtainsForPage(page, closedness);
     } else {
-      closedness = 0.5;
+      // OTHER PAGES: Fully closed (1)
+      setCurtainsForPage(page, 1);
     }
-    setCurtainsForPage(pages[pageNum], closedness);
-  }
+  });
   
-  if (pageNum + 1 < NUMPAGES) {
-    let closedness;
-    if (fracInPage < 0.5) {
-      closedness = 1 - (fracInPage / 0.5) * 0.5;
-    } else {
-      closedness = 0.5;
-    }
-    setCurtainsForPage(pages[pageNum + 1], closedness);
-  }
-  
-  const activePage = Math.round(scrollY / pageHeight);
-  dots.forEach((d, i) => d.classList.toggle('active', i === activePage));
+  dots.forEach((d, i) => d.classList.toggle('active', i === Math.round(scrollY / pageHeight)));
 }
 
 window.addEventListener('scroll', updateCurtains, { passive: true });
 
 dots.forEach((d, idx) => {
   d.addEventListener('click', () => {
-    window.scrollTo({
-      top: idx * window.innerHeight,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
   });
 });
 
-const navOverlay = document.getElementById('navOverlay');
 document.getElementById('tornMenu').addEventListener('click', () => {
-  navOverlay.classList.toggle('open');
+  document.getElementById('navOverlay').classList.toggle('open');
 });
 document.getElementById('navClose').addEventListener('click', () => {
-  navOverlay.classList.remove('open');
+  document.getElementById('navOverlay').classList.remove('open');
 });
 document.querySelectorAll('.nav-link').forEach(a => {
   a.addEventListener('click', () => {
-    navOverlay.classList.remove('open');
+    document.getElementById('navOverlay').classList.remove('open');
   });
 });
 
-(function init() {
-  pages.forEach(p => setCurtainsForPage(p, 1));
-  
-  setTimeout(() => {
-    let start = null;
-    const dur = 1200;
-    const targetClosedness = 0.5;
-    
-    function openAnim(ts) {
-      if (!start) start = ts;
-      const t = Math.min((ts - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 4);
-      
-      const closedness = 1 - (ease * 0.5);
-      setCurtainsForPage(pages[0], closedness);
-      
-      if (t < 1) requestAnimationFrame(openAnim);
-      else setCurtainsForPage(pages[0], targetClosedness);
-    }
-    
-    requestAnimationFrame(openAnim);
-  }, 300);
-})();
+pages[0] ? setCurtainsForPage(pages[0], 0.5) : null;
+pages.forEach((p, i) => {
+  if (i !== 0) setCurtainsForPage(p, 1);
+});
+setTimeout(() => {
+  let start = null;
+  function openAnim(ts) {
+    if (!start) start = ts;
+    const t = Math.min((ts - start) / 1200, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    setCurtainsForPage(pages[0], 1 - (ease * 0.5));
+    if (t < 1) requestAnimationFrame(openAnim);
+  }
+  requestAnimationFrame(openAnim);
+}, 300);
 </script>
 </body>
 </html>
