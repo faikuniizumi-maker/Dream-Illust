@@ -139,11 +139,6 @@
     box-sizing: border-box;
   }
 
-  /* Constrain paper to safe center area away from curtains */
-  .paper, .hero-center, .banner {
-    max-width: 60vw;
-  }
-
   .paper {
     position: relative;
     z-index: 10;
@@ -272,27 +267,86 @@
     color:rgba(245,239,227,0.15); border-top:1px solid rgba(139,18,18,0.25);
   }
 
+  /* ── TABLET ── */
   @media(max-width:768px) {
     .page { padding-top:50px; }
-    .page-content { padding:1.6rem 2rem; max-width:100%; gap:1.8rem; }
-    .paper, .hero-center, .banner { max-width: 58vw; }
+
+    /* Safe center zone - curtains are 50% wide each, content lives in middle 60% */
+    .page-content {
+      padding: 1.6rem 0;
+      width: 60%;
+      max-width: 60%;
+      margin: 0 auto;
+      gap: 1.5rem;
+    }
+
+    .paper, .hero-center, .banner { max-width: 100%; width: 100%; }
+    .paper { padding: 1.6rem 1.2rem; gap: 1rem; }
+
+    .banner { padding: 0.4rem 1.2rem; }
+    .banner-text { font-size: 1rem; }
+    .banner-sub { font-size: 0.78rem; }
+
+    .about-text { font-size: 0.85rem; line-height: 1.75; }
+
+    /* Info page - single column on tablet */
+    .info-grid { grid-template-columns: 1fr; gap: 0.7rem; }
+    .info-row { font-size: 0.82rem; }
+
+    /* Team - smaller cards */
+    .team-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+    .member-portrait { width: 56px; height: 56px; }
+    .member-name { font-size: 0.7rem; }
+    .member-role { font-size: 0.7rem; }
+
     .torn-menu { width:50px; height:40px; }
-    .banner { padding:0.4rem 1.2rem; }
-    .banner-text { font-size:1rem; }
-    .paper { padding:1.8rem 1.2rem; gap:1.2rem; }
-    .about-text { font-size:0.88rem; line-height:1.75; }
+    #page-dots { right: 0.5rem; }
   }
 
+  /* ── PHONE ── */
   @media(max-width:480px) {
-    .page { width:100%; min-height:100vh; padding:0; overflow-x:hidden; padding-top:50px; }
-    .page-content { padding:1.3rem 1.5rem; max-width:100%; gap:1.5rem; }
-    .paper, .hero-center, .banner { max-width: 56vw; }
-    .torn-menu { width:48px; height:38px; }
-    .banner { padding:0.3rem 1rem; }
-    .banner-text { font-size:0.85rem; }
-    .about-text { font-size:0.8rem; line-height:1.68; }
-    .paper { padding:1.5rem 1.1rem; gap:0.9rem; }
-    #page-dots { display:none; }
+    .page { width:100%; min-height:100vh; overflow-x:hidden; padding-top:50px; }
+
+    /* Safe center zone */
+    .page-content {
+      padding: 1.2rem 0;
+      width: 58%;
+      max-width: 58%;
+      margin: 0 auto;
+      gap: 1.2rem;
+    }
+
+    .paper, .hero-center, .banner { max-width: 100%; width: 100%; }
+    .paper { padding: 1.2rem 0.9rem; gap: 0.8rem; }
+
+    .banner { padding: 0.3rem 0.8rem; }
+    .banner-text { font-size: 0.82rem; letter-spacing: 0.2em; }
+    .banner-sub { font-size: 0.65rem; letter-spacing: 0.25em; }
+
+    .hero-tagline { font-size: 0.72rem; }
+    .hero-cta { font-size: 0.55rem; padding: 0.3rem 1rem; }
+
+    .about-text { font-size: 0.75rem; line-height: 1.65; margin-bottom: 0.5rem; }
+
+    /* Info page - single column stacked */
+    .info-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+    .info-box { padding: 0.6rem 0.7rem; }
+    .info-box-title { font-size: 0.6rem; }
+    .info-row { font-size: 0.75rem; }
+    .info-row span.lbl { font-size: 0.58rem; min-width: 28px; }
+    .logo-box { min-height: 55px; font-size: 0.58rem; }
+
+    /* Team - single column on very small phones, 2 col otherwise */
+    .team-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .member-card { padding: 0.6rem 0.4rem; }
+    .member-portrait { width: 44px; height: 44px; }
+    .member-portrait svg { width: 28px; height: 28px; }
+    .member-name { font-size: 0.62rem; }
+    .member-role { font-size: 0.62rem; }
+
+    .label-box { font-size: 0.58rem; padding: 0.1rem 0.6rem; }
+    .torn-menu { width:46px; height:36px; top: 3%; right: 2%; }
+    #page-dots { display: none; }
   }
 </style>
 </head>
@@ -393,12 +447,10 @@
           <div class="info-row">xxx · xxx · xxxx</div>
           <div class="info-row">dreamillust@email.com</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:0.7rem;">
-          <div class="info-box" style="flex:0;">
-            <div class="info-box-title">Location</div>
-            <div class="info-row" style="border:none;">Cavite, Philippines</div>
-          </div>
-          <div class="logo-box">INSERT LOGO HERE</div>
+        <div class="info-box">
+          <div class="info-box-title">Location</div>
+          <div class="info-row" style="border:none;">Cavite, Philippines</div>
+          <div class="logo-box" style="margin-top:0.5rem;">INSERT<br>LOGO<br>HERE</div>
         </div>
       </div>
       <div class="sec-label"><div class="label-box">Information</div></div>
