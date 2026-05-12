@@ -58,7 +58,7 @@
   .curtain-left, .curtain-right {
     position: absolute;
     top: 0; bottom: 0;
-    width: 20%;
+    width: 50%;
     z-index: 100;
     pointer-events: none;
     overflow: hidden;
@@ -135,6 +135,13 @@
     position: relative;
     gap: 2.5rem;
     margin: 0 auto;
+    /* Safe zone: content stays within center 60% so curtains never cover it */
+    box-sizing: border-box;
+  }
+
+  /* Constrain paper to safe center area away from curtains */
+  .paper, .hero-center, .banner {
+    max-width: 60vw;
   }
 
   .paper {
@@ -267,8 +274,8 @@
 
   @media(max-width:768px) {
     .page { padding-top:50px; }
-    .curtain-left, .curtain-right { width: 12%; }
     .page-content { padding:1.6rem 2rem; max-width:100%; gap:1.8rem; }
+    .paper, .hero-center, .banner { max-width: 58vw; }
     .torn-menu { width:50px; height:40px; }
     .banner { padding:0.4rem 1.2rem; }
     .banner-text { font-size:1rem; }
@@ -278,8 +285,8 @@
 
   @media(max-width:480px) {
     .page { width:100%; min-height:100vh; padding:0; overflow-x:hidden; padding-top:50px; }
-    .curtain-left, .curtain-right { width: 6%; }
     .page-content { padding:1.3rem 1.5rem; max-width:100%; gap:1.5rem; }
+    .paper, .hero-center, .banner { max-width: 56vw; }
     .torn-menu { width:48px; height:38px; }
     .banner { padding:0.3rem 1rem; }
     .banner-text { font-size:0.85rem; }
@@ -404,56 +411,37 @@
 <script>
 const pages = document.querySelectorAll('.page');
 const dots = document.querySelectorAll('.pdot');
-const OPEN = 100;
+const OPEN = 80; // % to translate outward when half-open (80% of 50% width = 40% screen hidden, 10% visible)
 
-function setCurtainsForPage(pageElement, closedness) {
+function setCurtainsForPage(pageElement, openness) {
   const cL = pageElement.querySelector('.curtain-left');
   const cR = pageElement.querySelector('.curtain-right');
   if (!cL || !cR) return;
-  
-  closedness = Math.max(0, Math.min(1, closedness));
-  const pct = OPEN * closedness;
-  
-  // Curtains move TOWARDS CENTER as closedness increases
-  cL.style.transform = `translateX(${pct}%)`;   // Left moves RIGHT towards center
-  cR.style.transform = `translateX(${-pct}%)`;  // Right moves LEFT towards center
+  openness = Math.max(0, Math.min(1, openness));
+  const pct = OPEN * openness;
+  cL.style.transform = `translateX(${-pct}%)`; // left moves left (off screen)
+  cR.style.transform = `translateX(${pct}%)`;  // right moves right (off screen)
 }
 
 function updateCurtains() {
   const scrollY = window.scrollY || 0;
   const pageHeight = window.innerHeight;
   const pageNum = Math.floor(scrollY / pageHeight);
-  const fracInPage = (scrollY % pageHeight) / pageHeight;
-  
+  const frac = (scrollY % pageHeight) / pageHeight;
+
   pages.forEach((page, i) => {
     if (i === pageNum) {
-      // CURRENT PAGE: Open (0) → Fully Close (1) → Open (0.5)
-      let closedness;
-      if (fracInPage < 0.5) {
-        // First half: 0.5 → 1 (closing)
-        closedness = 0.5 + (fracInPage * 1);  
-      } else {
-        // Second half: 1 → 0.5 (opening for next)
-        closedness = Math.max(0.5, 1 - ((fracInPage - 0.5) * 1));  
-      }
-      setCurtainsForPage(page, closedness);
+      // Current page: resting open (1) → fully closed (0) as you scroll away
+      setCurtainsForPage(page, 1 - frac);
     } else if (i === pageNum + 1) {
-      // NEXT PAGE: Closed (1) → Open (0.5)
-      let closedness;
-      if (fracInPage < 0.5) {
-        // First half: stay fully closed (1)
-        closedness = 1;
-      } else {
-        // Second half: 1 → 0.5 (opening)
-        closedness = Math.max(0.5, 1 - ((fracInPage - 0.5) * 1));  
-      }
-      setCurtainsForPage(page, closedness);
+      // Next page: fully closed (0) → resting open (1) as it comes in
+      setCurtainsForPage(page, frac);
     } else {
-      // OTHER PAGES: Fully closed (1)
-      setCurtainsForPage(page, 1);
+      // All other pages: fully closed
+      setCurtainsForPage(page, 0);
     }
   });
-  
+
   dots.forEach((d, i) => d.classList.toggle('active', i === Math.round(scrollY / pageHeight)));
 }
 
@@ -479,7 +467,7 @@ document.querySelectorAll('.nav-link').forEach(a => {
 
 pages[0] ? setCurtainsForPage(pages[0], 0.5) : null;
 pages.forEach((p, i) => {
-  if (i !== 0) setCurtainsForPage(p, 1);
+  if (i !== 0) setCurtainsForPage(p, 0);
 });
 setTimeout(() => {
   let start = null;
@@ -487,7 +475,7 @@ setTimeout(() => {
     if (!start) start = ts;
     const t = Math.min((ts - start) / 1200, 1);
     const ease = 1 - Math.pow(1 - t, 4);
-    setCurtainsForPage(pages[0], 1 - (ease * 0.5));
+    setCurtainsForPage(pages[0], ease * 1); // 0 → 1 (closed → half-open)
     if (t < 1) requestAnimationFrame(openAnim);
   }
   requestAnimationFrame(openAnim);
