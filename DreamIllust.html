@@ -3,369 +3,491 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Illust.</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<title>Dream Illust. — Fine Illustration Collective</title>
+<meta name="description" content="Dream Illust. is a creative illustration collective based in Cavite, Philippines. Commissions, concept art, and stories told through art.">
+<meta property="og:title" content="Dream Illust.">
+<meta property="og:description" content="Illustrations born from dreams & imagination — Cavite, Philippines">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #f5efe3;
-    --ink: #1a1008;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-  body { 
-    width: 100%;
-    background: #1a1008; 
-    font-family: 'Caveat', cursive; 
-    color: var(--ink);
-    overflow-x: hidden;
-  }
+:root {
+  --cream:#f6f0e4; --cream-dark:#e8dcc4;
+  --ink:#1a1008; --ink-light:#3a2810;
+  --gold:#d4b756; --gold-dark:#a8893a; --gold-light:#e8d080;
+  --red:#8B1212; --red-dark:#5a0a0a; --red-mid:#7a1010;
+  --stage:#0e0a06;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{ width:100%; background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); overflow-x:hidden; }
 
-  .page {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1008;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 28px 28px;
-    overflow: hidden;
-    padding-top: 65px;
-  }
+/* ── SVG FILTER for paper grain ── */
+svg.filters{ position:absolute; width:0; height:0; }
 
-  /* Decorative swag - PROMINENT (red with gold curves, in FRONT) */
-  #stage-swag {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 65px;
-    background: linear-gradient(180deg, #8B1212 0%, #8B1212 85%, #d4b756 85%, #d4b756 100%);
-    clip-path: polygon(
-      0 0%, 1% 5%, 2% 10%, 3% 15%, 4% 20%, 5% 24%, 6% 28%, 7% 32%, 8% 35%, 9% 38%, 10% 40%, 11% 42%, 12% 43%, 
-      15% 44%, 18% 45%, 22% 46%, 25% 46%, 28% 45%, 32% 44%, 35% 43%, 38% 42%, 40% 40%, 42% 38%, 45% 35%, 48% 32%, 50% 28%, 
-      52% 32%, 55% 35%, 58% 38%, 60% 40%, 62% 42%, 65% 43%, 68% 44%, 72% 45%, 75% 46%, 78% 45%, 82% 44%, 85% 43%, 88% 42%, 
-      89% 40%, 90% 38%, 91% 35%, 92% 32%, 93% 28%, 94% 24%, 95% 20%, 96% 15%, 97% 10%, 98% 5%, 99% 2%, 100% 0%
-    );
-    z-index: 110;
-    pointer-events: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  }
+/* ── PARTICLE CANVAS ── */
+#particle-canvas{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.6; }
 
-  .curtain-left, .curtain-right {
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 50%;
-    z-index: 100;
-    pointer-events: none;
-    overflow: hidden;
-  }
+/* ── PAGES ── */
+.page{
+  position:relative; width:100%; min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; padding-top:72px;
+  background:var(--stage);
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(255,255,255,0.014) 0px, transparent 1px, transparent 34px),
+    repeating-linear-gradient(90deg,  rgba(255,255,255,0.014) 0px, transparent 1px, transparent 34px);
+}
 
-  .curtain-left {
-    left: 0;
-    background: linear-gradient(90deg,
-      #2d0505 0%, #5a0e0e 15%, #8B1212 40%,
-      #9e1515 60%, #7a1010 80%, #6b0e0e 100%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,0.25) 0px,   rgba(0,0,0,0.25) 2px,
-      transparent      2px,   transparent      16px,
-      rgba(0,0,0,0.1)  16px,  rgba(0,0,0,0.1)  18px,
-      transparent      18px,  transparent      32px,
-      rgba(255,255,255,0.04) 32px, rgba(255,255,255,0.04) 34px,
-      transparent      34px,  transparent      48px
-    );
-    clip-path: polygon(
-      0 0, 100% 0, 100% 100%,
-      96% 96%, 90% 100%, 84% 95%, 78% 100%,
-      72% 95%, 66% 100%, 60% 95%, 54% 100%,
-      48% 95%, 42% 100%, 36% 95%, 30% 100%,
-      24% 95%, 18% 100%, 12% 95%, 6% 100%, 0 95%
-    );
-  }
-  .curtain-right {
-    right: 0;
-    background: linear-gradient(270deg,
-      #2d0505 0%, #5a0e0e 15%, #8B1212 40%,
-      #9e1515 60%, #7a1010 80%, #6b0e0e 100%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,0.25) 0px,   rgba(0,0,0,0.25) 2px,
-      transparent      2px,   transparent      16px,
-      rgba(0,0,0,0.1)  16px,  rgba(0,0,0,0.1)  18px,
-      transparent      18px,  transparent      32px,
-      rgba(255,255,255,0.04) 32px, rgba(255,255,255,0.04) 34px,
-      transparent      34px,  transparent      48px
-    );
-    clip-path: polygon(
-      0 0, 100% 0, 100% 95%,
-      94% 100%, 88% 95%, 82% 100%, 76% 95%,
-      70% 100%, 64% 95%, 58% 100%, 52% 95%,
-      46% 100%, 40% 95%, 34% 100%, 28% 95%,
-      22% 100%, 16% 95%, 10% 100%, 4% 95%, 0 100%
-    );
-  }
+/* Watercolor corner bleeds */
+.page::before{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:
+    radial-gradient(ellipse 45% 35% at 0%   0%,   rgba(139,18,18,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 35% at 100% 0%,   rgba(139,18,18,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 0%   100%, rgba(90,10,10,0.16)  0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(90,10,10,0.16)  0%, transparent 70%),
+    radial-gradient(ellipse 60% 25% at 50%  0%,   rgba(212,183,86,0.05) 0%, transparent 70%);
+}
 
-  .curtain-left::after, .curtain-right::after {
-    content: '';
-    position: absolute;
-    top: 45%;
-    width: 18px; height: 28px;
-    background: #222;
-    border: 2px solid #555;
-    border-radius: 3px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-  }
-  .curtain-left::after  { right: -6px; }
-  .curtain-right::after { left:  -6px; }
+/* Dramatic spotlight */
+.page::after{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 45%,
+      rgba(255,245,210,0.10) 0%,
+      rgba(255,230,160,0.05) 30%,
+      rgba(255,200,100,0.02) 55%,
+      transparent 75%),
+    radial-gradient(ellipse 30% 20% at 50% 15%,
+      rgba(255,245,220,0.08) 0%, transparent 100%);
+}
 
-  .page-content {
-    width: 100%;
-    max-width: 750px;
-    padding: 2rem 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 10;
-    position: relative;
-    gap: 2.5rem;
-    margin: 0 auto;
-    /* Safe zone: content stays within center 60% so curtains never cover it */
-    box-sizing: border-box;
-  }
+/* ── FIXED THEATER SWAG ── */
+#stage-swag{
+  position:fixed; top:0; left:0; right:0; height:72px;
+  background:linear-gradient(180deg,
+    #6b0e0e 0%, #8B1212 30%, #9e1515 65%, #8B1212 84%,
+    var(--gold-dark) 84%, var(--gold) 91%, var(--gold-dark) 100%);
+  clip-path:polygon(
+    0 0%,1% 5%,2% 10%,3% 15%,4% 20%,5% 24%,6% 28%,7% 32%,8% 35%,9% 38%,10% 40%,11% 42%,12% 43%,
+    15% 44%,18% 45%,22% 46%,25% 46%,28% 45%,32% 44%,35% 43%,38% 42%,40% 40%,42% 38%,45% 35%,48% 32%,50% 28%,
+    52% 32%,55% 35%,58% 38%,60% 40%,62% 42%,65% 43%,68% 44%,72% 45%,75% 46%,78% 45%,82% 44%,85% 43%,88% 42%,
+    89% 40%,90% 38%,91% 35%,92% 32%,93% 28%,94% 24%,95% 20%,96% 15%,97% 10%,98% 5%,99% 2%,100% 0%
+  );
+  z-index:110; pointer-events:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.8), 0 2px 0 rgba(212,183,86,0.3);
+}
+#stage-swag::before{
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(90deg,
+    rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 2px,
+    transparent 2px, transparent 18px,
+    rgba(255,255,255,0.04) 18px, rgba(255,255,255,0.04) 20px,
+    transparent 20px, transparent 36px);
+  pointer-events:none;
+}
+#stage-swag::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 35%, rgba(0,0,0,0.15) 100%);
+  pointer-events:none;
+}
 
-  .paper {
-    position: relative;
-    z-index: 10;
-    background: var(--cream);
-    box-shadow: 0 8px 60px rgba(0,0,0,0.6);
-    border: 1.5px solid #aaa;
-    width: 100%;
-    padding: 2.8rem 2.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
+/* ── CURTAINS ── */
+.curtain-left,.curtain-right{
+  position:absolute; top:0; bottom:0;
+  width:50%; z-index:100; pointer-events:none; overflow:hidden;
+}
+.curtain-left{
+  left:0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.20) 0px, rgba(0,0,0,0.20) 2px,
+      transparent 2px, transparent 12px,
+      rgba(0,0,0,0.08) 12px, rgba(0,0,0,0.08) 14px,
+      transparent 14px, transparent 24px,
+      rgba(255,255,255,0.025) 24px, rgba(255,255,255,0.025) 26px,
+      transparent 26px, transparent 38px),
+    linear-gradient(90deg, #160303 0%, #3d0a0a 10%, #6b0e0e 28%, #8B1212 50%, #9e1515 68%, #8B1212 85%, #6b0e0e 100%);
+  clip-path:polygon(0 0,100% 0,100% 100%,96% 96%,90% 100%,84% 95%,78% 100%,72% 95%,66% 100%,60% 95%,54% 100%,48% 95%,42% 100%,36% 95%,30% 100%,24% 95%,18% 100%,12% 95%,6% 100%,0 95%);
+}
+.curtain-right{
+  right:0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.20) 0px, rgba(0,0,0,0.20) 2px,
+      transparent 2px, transparent 12px,
+      rgba(0,0,0,0.08) 12px, rgba(0,0,0,0.08) 14px,
+      transparent 14px, transparent 24px,
+      rgba(255,255,255,0.025) 24px, rgba(255,255,255,0.025) 26px,
+      transparent 26px, transparent 38px),
+    linear-gradient(270deg, #160303 0%, #3d0a0a 10%, #6b0e0e 28%, #8B1212 50%, #9e1515 68%, #8B1212 85%, #6b0e0e 100%);
+  clip-path:polygon(0 0,100% 0,100% 95%,94% 100%,88% 95%,82% 100%,76% 95%,70% 100%,64% 95%,58% 100%,52% 95%,46% 100%,40% 95%,34% 100%,28% 95%,22% 100%,16% 95%,10% 100%,4% 95%,0 100%);
+}
+/* Gold tassel */
+.curtain-left::after,.curtain-right::after{
+  content:''; position:absolute; top:43%;
+  width:20px; height:40px;
+  background:linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 25%, var(--gold-dark) 55%, #6a4e12 100%);
+  border-radius:2px 2px 8px 8px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,235,120,0.5);
+}
+.curtain-left::after  { right:-7px; }
+.curtain-right::after { left:-7px;  }
 
-  .banner {
-    position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--cream);
-    padding: 0.6rem 2.5rem 0.7rem;
-    border: 2px solid #999;
-    box-shadow: 3px 4px 12px rgba(0,0,0,0.25);
-    margin-bottom: 0;
-    z-index: 10;
-  }
-  .banner::before, .banner::after {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    width: 0; height: 0;
-    border-top: 12px solid #999;
-  }
-  .banner::before { left:-10px;  border-right:10px solid transparent; transform:rotate(-18deg); }
-  .banner::after  { right:-10px; border-left:10px solid transparent;  transform:rotate(18deg);  }
-  .banner-text { font-family:'Special Elite',serif; font-size:1.4rem; letter-spacing:0.3em; line-height:1.1; text-align:center; color:var(--ink); font-weight:500; }
-  .banner-sub  { font-size:1rem; letter-spacing:0.4em; color:#555; margin-top:0.2rem; }
+/* ── INK SPLATTER (decorative stage drops) ── */
+.ink-splatter{
+  position:absolute; z-index:2; pointer-events:none; opacity:0.18;
+}
 
-  .hero-center {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.8rem;
-    text-align: center;
-  }
-  .hero-tagline { font-size:1rem; color:rgba(245,239,227,0.65); letter-spacing:0.05em; }
-  .hero-cta {
-    display: inline-block;
-    padding: 0.5rem 1.8rem;
-    border: 1.5px solid var(--cream);
-    color: var(--cream);
-    font-family: 'Special Elite', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-  }
-  .hero-cta:hover { background:var(--cream); color:#5a0a0a; }
+/* ── PAINTBRUSH CORNERS ── */
+.brush-corner{ position:absolute; z-index:2; pointer-events:none; opacity:0.10; }
+.brush-corner svg{ width:160px; height:45px; }
+.brush-tl{ top:76px; left:6px;  transform:rotate(-30deg) scaleX(-1); }
+.brush-tr{ top:76px; right:6px; transform:rotate(30deg); }
+.brush-bl{ bottom:35px; left:6px;  transform:rotate(18deg) scaleX(-1); }
+.brush-br{ bottom:35px; right:6px; transform:rotate(-18deg); }
 
-  .about-text { font-size:0.95rem; line-height:1.9; color:#333; text-align:justify; margin-bottom:0.9rem; }
+/* ── COMMISSION BADGE ── */
+.commission-badge{
+  position:absolute; top:80px; left:50%; transform:translateX(-50%);
+  z-index:12;
+  background:linear-gradient(135deg, #2a6e2a, #1a4a1a);
+  color:#a0e0a0; font-family:'Special Elite',serif;
+  font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase;
+  padding:0.18rem 0.9rem; border:1px solid rgba(100,200,100,0.4);
+  box-shadow:0 2px 10px rgba(0,0,0,0.4), 0 0 12px rgba(60,160,60,0.2);
+  white-space:nowrap;
+}
+.commission-badge::before{ content:'● '; color:#6eff6e; font-size:0.6rem; }
 
-  .team-grid { display:grid; grid-template-columns:repeat(2,minmax(120px,140px)); gap:1.5rem; margin-bottom:1.5rem; justify-content:center; }
-  .member-card { display:flex; flex-direction:column; align-items:center; gap:0.4rem; border:1.5px solid #bbb; padding:0.8rem 0.6rem; background:rgba(255,255,255,0.5); }
-  .member-portrait { width:64px; height:64px; border:1.5px solid #aaa; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#ede8dc; }
-  .member-portrait svg { width:40px; height:40px; opacity:0.4; }
-  .member-name { font-family:'Special Elite',serif; font-size:0.75rem; letter-spacing:0.08em; color:#444; border-top:1px dashed #ccc; width:100%; padding-top:0.25rem; text-align:center; }
-  .member-role { font-size:0.75rem; color:#777; text-align:center; }
+/* ── PAGE CONTENT ── */
+.page-content{
+  width:60%; max-width:580px;
+  padding:2rem 0;
+  display:flex; flex-direction:column; align-items:center;
+  z-index:10; position:relative; gap:1.8rem; margin:0 auto;
+}
 
-  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.2rem; }
-  .info-box { border:1.5px solid #bbb; padding:0.9rem 1rem; background:rgba(255,255,255,0.5); }
-  .info-box-title { font-family:'Special Elite',serif; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#888; border-bottom:1px solid #ddd; padding-bottom:0.25rem; }
-  .info-row { display:flex; align-items:center; gap:0.3rem; font-size:0.9rem; color:#444; border-bottom:1px solid #eee; padding-bottom:0.2rem; }
-  .info-row span.lbl { font-family:'Special Elite',serif; font-size:0.65rem; color:#999; min-width:40px; }
-  .logo-box { display:flex; align-items:center; justify-content:center; min-height:80px; border:1.5px dashed #bbb; color:#aaa; font-family:'Special Elite',serif; font-size:0.7rem; text-align:center; line-height:1.5; }
-  .label-box { border:1.5px solid #aaa; padding:0.2rem 1rem; font-family:'Special Elite',serif; font-size:0.65rem; letter-spacing:0.15em; color:#555; text-transform:uppercase; }
-  .sec-label { margin-top:1rem; display:flex; justify-content:center; }
+/* ── PAPER ── */
+.paper{
+  position:relative; z-index:10;
+  background:
+    repeating-linear-gradient(0deg,   rgba(0,0,0,0.012) 0px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(90deg,  rgba(0,0,0,0.012) 0px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(45deg,  rgba(180,140,80,0.018) 0px, transparent 1px, transparent 8px),
+    linear-gradient(155deg, #faf4e8 0%, #f4ead6 40%, #ede0c6 70%, #e8d8bc 100%);
+  box-shadow:
+    0 10px 50px rgba(0,0,0,0.6),
+    0 2px 0 rgba(212,183,86,0.2),
+    0 -1px 0 rgba(255,255,255,0.5),
+    inset 0 0 40px rgba(0,0,0,0.05),
+    inset 2px 0 8px rgba(180,140,80,0.08);
+  border:1px solid rgba(180,150,90,0.3);
+  width:100%; padding:2.6rem 2.2rem;
+  display:flex; flex-direction:column; gap:1.2rem;
+  clip-path:polygon(
+    0% 0.8%,1.5% 0%,3% 0.9%,4.5% 0.1%,6% 0.8%,7.5% 0%,9% 1.1%,10.5% 0.2%,12% 0.8%,14% 0%,
+    16% 0.9%,18% 0.1%,20% 0.8%,22% 0.3%,24% 1%,26% 0%,28% 0.8%,30% 0.4%,32% 0.9%,34% 0%,
+    36% 0.8%,38% 0.2%,40% 1%,42% 0%,44% 0.8%,46% 0.4%,48% 0.9%,50% 0%,52% 0.8%,54% 0.3%,
+    56% 1%,58% 0%,60% 0.8%,62% 0.4%,64% 0.9%,66% 0%,68% 0.8%,70% 0.3%,72% 1%,74% 0%,
+    76% 0.8%,78% 0.4%,80% 0.9%,82% 0%,84% 0.8%,86% 0.2%,88% 1%,90% 0.1%,92% 0.8%,94% 0.4%,
+    96% 0.9%,98% 0%,100% 0.8%,
+    100% 99.2%,98% 100%,96% 99.1%,94% 100%,92% 99.2%,90% 100%,88% 99.1%,86% 100%,84% 99.3%,
+    82% 100%,80% 99.1%,78% 100%,76% 99.2%,74% 100%,72% 99.1%,70% 100%,68% 99.3%,66% 100%,
+    64% 99.1%,62% 100%,60% 99.2%,58% 100%,56% 99.1%,54% 100%,52% 99.3%,50% 100%,48% 99.1%,
+    46% 100%,44% 99.2%,42% 100%,40% 99.1%,38% 100%,36% 99.3%,34% 100%,32% 99.1%,30% 100%,
+    28% 99.2%,26% 100%,24% 99.1%,22% 100%,20% 99.3%,18% 100%,16% 99.1%,14% 100%,12% 99.2%,
+    10.5% 100%,9% 99.1%,7.5% 100%,6% 99.3%,4.5% 100%,3% 99.1%,1.5% 100%,0% 99.2%
+  );
+}
+/* Left margin red line (like art sketchbook) */
+.paper::before{
+  content:''; position:absolute; top:0; bottom:0; left:2.8rem; width:1px;
+  background:linear-gradient(180deg, transparent 5%, rgba(139,18,18,0.15) 15%, rgba(139,18,18,0.15) 85%, transparent 95%);
+  pointer-events:none;
+}
+/* Wax seal */
+.paper::after{
+  content:'D.I.';
+  position:absolute; bottom:-15px; right:20px;
+  width:40px; height:40px;
+  background:radial-gradient(circle at 40% 35%, #c01818 0%, #8B1212 45%, #5a0808 100%);
+  border-radius:50%;
+  font-family:'Special Elite',serif; font-size:0.48rem; letter-spacing:0.06em;
+  color:rgba(212,183,86,0.95); line-height:40px; text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,120,120,0.2), 0 0 0 2px rgba(212,183,86,0.2);
+  z-index:20;
+}
 
-  .torn-menu {
-    position: fixed;
-    top: 1.5%; right: 1.5%;
-    z-index: 999;
-    width: 56px; height: 44px;
-    background: var(--cream);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 3px;
-    clip-path: polygon(8% 0%,30% 4%,55% 0%,78% 5%,100% 0%,97% 25%,100% 55%,95% 80%,100% 100%,70% 95%,45% 100%,22% 96%,0% 100%,3% 72%,0% 45%,4% 20%);
-    box-shadow: 2px 3px 10px rgba(0,0,0,0.4);
-  }
-  .torn-menu .dot { width:4px; height:4px; background:#555; border-radius:50%; }
+/* ── BANNER ── */
+.banner{
+  position:relative; display:inline-flex; flex-direction:column;
+  align-items:center; z-index:10;
+  background:linear-gradient(155deg, #faf4e8 0%, #ede0c6 100%);
+  padding:0.7rem 3rem 0.8rem;
+  border:1.5px solid rgba(180,150,90,0.45);
+  box-shadow:4px 6px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.7), 0 0 0 4px rgba(0,0,0,0.12);
+}
+.banner::before,.banner::after{
+  content:''; position:absolute; bottom:-14px;
+  width:0; height:0; border-top:14px solid rgba(180,150,90,0.45);
+}
+.banner::before{ left:-12px; border-right:12px solid transparent; transform:rotate(-18deg); }
+.banner::after { right:-12px; border-left:12px solid transparent;  transform:rotate(18deg);  }
+.banner-text{ font-family:'Special Elite',serif; font-size:1.5rem; letter-spacing:0.35em; line-height:1.1; text-align:center; color:var(--ink); }
+.banner-sub { font-size:1rem; letter-spacing:0.44em; color:#5a3e18; margin-top:0.18rem; }
 
-  .nav-overlay {
-    position: fixed; inset:0; z-index:9999;
-    background: rgba(5,2,2,0.96);
-    display: flex; flex-direction:column; align-items:center; justify-content:center; gap:1.2rem;
-    opacity:0; pointer-events:none; transition:opacity 0.3s;
-  }
-  .nav-overlay.open { opacity:1; pointer-events:all; }
-  .close-btn { position:absolute; top:1rem; right:1rem; background:none; border:none; color:var(--cream); font-size:1.4rem; cursor:pointer; opacity:0.6; }
-  .nav-link { display:flex; align-items:center; gap:0.5rem; font-family:'Special Elite',serif; font-size:1.2rem; letter-spacing:0.12em; color:#d4bfa0; text-decoration:none; transition:color 0.2s; }
-  .nav-link:hover { color:#fff; }
-  .nav-link .br { color:#8a6a40; font-size:1.4rem; }
+/* ── HERO ── */
+.hero-center{
+  position:relative; z-index:10;
+  display:flex; flex-direction:column; align-items:center; gap:1.8rem;
+  text-align:center;
+}
+.hero-tagline{
+  font-family:'Caveat',cursive; font-size:0.98rem;
+  color:rgba(240,225,195,0.72); letter-spacing:0.07em;
+  position:relative; padding-bottom:0.6rem;
+}
+.hero-tagline::after{
+  content:''; position:absolute; bottom:0; left:15%; right:15%; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,183,86,0.55), transparent);
+}
+.hero-cta{
+  display:inline-block; padding:0.6rem 2.2rem;
+  border:1.5px solid rgba(212,183,86,0.65);
+  color:var(--gold); font-family:'Special Elite',serif;
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+  text-decoration:none; transition:all 0.35s;
+  background:rgba(212,183,86,0.07);
+  box-shadow:0 0 16px rgba(212,183,86,0.12), inset 0 0 16px rgba(212,183,86,0.04);
+  position:relative; overflow:hidden;
+}
+.hero-cta::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent 0%, rgba(212,183,86,0.15) 50%, transparent 100%);
+  transform:translateX(-100%); transition:transform 0.5s;
+}
+.hero-cta:hover{ background:var(--gold); color:#1a0808; box-shadow:0 0 28px rgba(212,183,86,0.4); }
+.hero-cta:hover::before{ transform:translateX(100%); }
 
-  #page-dots {
-    position: fixed;
-    right: 1rem; top: 50%;
-    transform: translateY(-50%);
-    z-index: 998;
-    display: flex; flex-direction:column; gap:7px;
-  }
-  .pdot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: rgba(245,239,227,0.25);
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
-  .pdot.active { background: var(--cream); transform: scale(1.3); }
+/* ── PALETTE DOTS (hero decoration) ── */
+.palette-strip{
+  display:flex; gap:0.5rem; align-items:center; opacity:0.55;
+}
+.palette-dot{
+  width:9px; height:9px; border-radius:50%;
+  box-shadow:0 1px 4px rgba(0,0,0,0.4);
+}
 
-  footer {
-    position:relative; width:100%; z-index:50;
-    background:#0a0202; text-align:center; padding:0.4rem 1rem;
-    font-family:'Special Elite',serif; font-size:0.5rem; letter-spacing:0.08em;
-    color:rgba(245,239,227,0.15); border-top:1px solid rgba(139,18,18,0.25);
-  }
+/* ── ABOUT TEXT ── */
+.about-text{
+  font-size:0.95rem; line-height:1.95; color:#3a2810; text-align:justify;
+  position:relative; padding-left:0.3rem;
+}
+.about-text:first-child::before{
+  content:'"'; position:absolute; left:-1rem; top:-0.4rem;
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:2.8rem; color:rgba(139,18,18,0.16); line-height:1; pointer-events:none;
+}
 
-  /* ── TABLET ── */
-  @media(max-width:768px) {
-    .page { padding-top:50px; }
+/* ── INK DIVIDER ── */
+.ink-divider{ width:100%; display:flex; align-items:center; gap:0.7rem; opacity:0.4; }
+.ink-divider::before,.ink-divider::after{ content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,#8B1212,transparent); }
+.ink-divider span{ font-family:'Caveat',cursive; font-size:1rem; color:#8B1212; white-space:nowrap; }
 
-    /* Safe center zone - curtains are 50% wide each, content lives in middle 60% */
-    .page-content {
-      padding: 1.6rem 0;
-      width: 60%;
-      max-width: 60%;
-      margin: 0 auto;
-      gap: 1.5rem;
-    }
+/* ── TEAM ── */
+.team-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.2rem; width:100%; }
+.member-card{
+  display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+  border:1px solid rgba(180,150,90,0.28); padding:1.2rem 0.9rem;
+  background:linear-gradient(155deg, rgba(255,255,255,0.6), rgba(235,220,190,0.3));
+  position:relative; overflow:hidden; transition:transform 0.25s, box-shadow 0.25s;
+}
+/* Top gold accent bar */
+.member-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:2.5px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent); opacity:0.6;
+}
+/* Sketch corner marks */
+.member-card::after{
+  content:''; position:absolute; bottom:6px; right:6px;
+  width:12px; height:12px;
+  border-right:1px solid rgba(180,150,90,0.3); border-bottom:1px solid rgba(180,150,90,0.3);
+}
+.member-card:hover{ transform:translateY(-5px); box-shadow:0 10px 28px rgba(0,0,0,0.18); }
+.member-portrait{
+  width:70px; height:70px; border:1.5px solid rgba(180,150,90,0.4);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 40% 35%, #f5eddc 0%, #e0ceac 100%);
+  box-shadow:0 3px 12px rgba(0,0,0,0.15), inset 0 -2px 4px rgba(0,0,0,0.08);
+}
+.member-portrait svg{ width:44px; height:44px; opacity:0.32; }
+.member-name{ font-family:'Special Elite',serif; font-size:0.8rem; letter-spacing:0.1em; color:#3a2810; border-top:1px dashed rgba(180,150,90,0.35); width:100%; padding-top:0.3rem; text-align:center; margin-top:0.2rem; }
+.member-role{ font-family:'Caveat',cursive; font-size:0.82rem; color:#7a5a30; text-align:center; }
 
-    .paper, .hero-center, .banner { max-width: 100%; width: 100%; }
-    .paper { padding: 1.6rem 1.2rem; gap: 1rem; }
+/* ── INFO ── */
+.info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:0.6rem; }
+.info-box{
+  border:1px solid rgba(180,150,90,0.28); padding:0.9rem 1rem;
+  background:rgba(255,255,255,0.42); display:flex; flex-direction:column; gap:0.28rem;
+  position:relative;
+}
+.info-box::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--gold-dark), transparent); opacity:0.3;
+}
+.info-box-title{ font-family:'Special Elite',serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:#8B6030; border-bottom:1px solid rgba(180,150,90,0.25); padding-bottom:0.22rem; margin-bottom:0.1rem; }
+.info-row{ display:flex; align-items:center; gap:0.4rem; font-family:'Caveat',cursive; font-size:0.9rem; color:#3a2810; border-bottom:1px solid rgba(200,180,140,0.25); padding-bottom:0.18rem; }
+.info-row span.lbl{ font-family:'Special Elite',serif; font-size:0.58rem; color:#a07840; min-width:34px; }
+.logo-box{ display:flex; align-items:center; justify-content:center; min-height:78px; border:1.5px dashed rgba(180,150,90,0.38); color:#b09060; font-family:'Special Elite',serif; font-size:0.66rem; text-align:center; line-height:1.8; background:rgba(245,235,210,0.28); }
 
-    .banner { padding: 0.4rem 1.2rem; }
-    .banner-text { font-size: 1rem; }
-    .banner-sub { font-size: 0.78rem; }
+/* Margin note / handwritten annotation */
+.margin-note{ font-family:'Caveat',cursive; font-size:0.74rem; color:rgba(139,18,18,0.42); text-align:right; font-style:italic; margin-top:-0.4rem; }
 
-    .about-text { font-size: 0.85rem; line-height: 1.75; }
+.label-box{ border:1px solid rgba(180,150,90,0.4); padding:0.22rem 1.1rem; font-family:'Special Elite',serif; font-size:0.62rem; letter-spacing:0.2em; color:#7a5a30; text-transform:uppercase; background:rgba(212,183,86,0.07); }
+.sec-label{ margin-top:0.6rem; display:flex; justify-content:center; }
 
-    /* Info page - single column on tablet */
-    .info-grid { grid-template-columns: 1fr; gap: 0.7rem; }
-    .info-row { font-size: 0.82rem; }
+/* ── TORN MENU ── */
+.torn-menu{
+  position:fixed; top:1.5%; right:1.5%; z-index:999;
+  width:56px; height:44px; background:var(--cream);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;
+  clip-path:polygon(8% 0%,30% 4%,55% 0%,78% 5%,100% 0%,97% 25%,100% 55%,95% 80%,100% 100%,70% 95%,45% 100%,22% 96%,0% 100%,3% 72%,0% 45%,4% 20%);
+  box-shadow:2px 3px 14px rgba(0,0,0,0.5); transition:transform 0.15s;
+}
+.torn-menu:hover{ transform:scale(1.08); }
+.torn-menu .dot{ width:4px; height:4px; background:#6a4820; border-radius:50%; }
 
-    /* Team - smaller cards */
-    .team-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-    .member-portrait { width: 56px; height: 56px; }
-    .member-name { font-size: 0.7rem; }
-    .member-role { font-size: 0.7rem; }
+/* ── NAV OVERLAY ── */
+.nav-overlay{
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(8,3,2,0.97);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem;
+  opacity:0; pointer-events:none; transition:opacity 0.35s;
+}
+/* Ink splatter in nav */
+.nav-overlay::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(139,18,18,0.04) 0%, transparent 70%),
+    radial-gradient(circle 4px at 22% 28%, rgba(139,18,18,0.4) 50%, transparent 51%),
+    radial-gradient(circle 2px at 78% 22%, rgba(139,18,18,0.35) 50%, transparent 51%),
+    radial-gradient(circle 5px at 82% 68%, rgba(212,183,86,0.22) 50%, transparent 51%),
+    radial-gradient(circle 2px at 18% 72%, rgba(212,183,86,0.28) 50%, transparent 51%),
+    radial-gradient(circle 3px at 62% 82%, rgba(139,18,18,0.3) 50%, transparent 51%),
+    radial-gradient(circle 2px at 38% 14%, rgba(212,183,86,0.22) 50%, transparent 51%),
+    radial-gradient(circle 3px at 55% 30%, rgba(139,18,18,0.2) 50%, transparent 51%);
+}
+/* Gold divider line */
+.nav-overlay::after{
+  content:''; position:absolute; top:50%; left:20%; right:20%; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,183,86,0.1), transparent);
+}
+.nav-overlay.open{ opacity:1; pointer-events:all; }
+.close-btn{ position:absolute; top:1.2rem; right:1.2rem; background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer; opacity:0.45; transition:opacity 0.2s; }
+.close-btn:hover{ opacity:1; }
+.nav-link{
+  display:flex; align-items:center; gap:0.6rem;
+  font-family:'Special Elite',serif; font-size:1.3rem; letter-spacing:0.15em;
+  color:#d4bfa0; text-decoration:none; transition:all 0.25s; position:relative;
+}
+.nav-link:hover{ color:var(--gold); letter-spacing:0.22em; }
+.nav-link .br{ color:rgba(139,18,18,0.75); font-size:1.5rem; line-height:1; }
+.nav-sub{ font-family:'Caveat',cursive; font-size:0.7rem; color:rgba(212,183,86,0.35); letter-spacing:0.12em; text-align:center; margin-top:-0.8rem; }
 
-    .torn-menu { width:50px; height:40px; }
-    #page-dots { right: 0.5rem; }
-  }
+/* ── PAGE DOTS ── */
+#page-dots{ position:fixed; right:0.8rem; top:50%; transform:translateY(-50%); z-index:998; display:flex; flex-direction:column; gap:8px; }
+.pdot{ width:5px; height:5px; border-radius:50%; background:rgba(212,183,86,0.18); cursor:pointer; transition:all 0.3s; border:1px solid rgba(212,183,86,0.28); }
+.pdot.active{ background:var(--gold); transform:scale(1.45); border-color:var(--gold); box-shadow:0 0 8px rgba(212,183,86,0.55); }
 
-  /* ── PHONE ── */
-  @media(max-width:480px) {
-    .page { width:100%; min-height:100vh; overflow-x:hidden; padding-top:50px; }
+/* ── FOOTER ── */
+footer{
+  position:relative; width:100%; z-index:50;
+  background:#050101; text-align:center; padding:0.6rem 1rem;
+  font-family:'Special Elite',serif; font-size:0.5rem; letter-spacing:0.12em;
+  color:rgba(212,183,86,0.22); border-top:1px solid rgba(212,183,86,0.1);
+}
+footer span{ color:rgba(139,18,18,0.5); margin:0 0.4rem; }
 
-    /* Safe center zone */
-    .page-content {
-      padding: 1.2rem 0;
-      width: 58%;
-      max-width: 58%;
-      margin: 0 auto;
-      gap: 1.2rem;
-    }
+/* ══ TABLET ══ */
+@media(max-width:768px){
+  .page{ padding-top:56px; }
+  #stage-swag{ height:56px; }
+  .page-content{ width:58%; max-width:58%; padding:1.4rem 0; gap:1.4rem; }
+  .paper{ padding:1.8rem 1.4rem; gap:1rem; }
+  .banner{ padding:0.5rem 1.5rem; }
+  .banner-text{ font-size:1.05rem; }
+  .banner-sub{ font-size:0.78rem; }
+  .about-text{ font-size:0.86rem; }
+  .info-grid{ grid-template-columns:1fr; gap:0.7rem; }
+  .torn-menu{ width:50px; height:40px; top:1%; right:1%; }
+  #page-dots{ right:0.4rem; }
+  .brush-corner svg{ width:100px; height:30px; }
+  .commission-badge{ font-size:0.48rem; }
+}
 
-    .paper, .hero-center, .banner { max-width: 100%; width: 100%; }
-    .paper { padding: 1.2rem 0.9rem; gap: 0.8rem; }
-
-    .banner { padding: 0.3rem 0.8rem; }
-    .banner-text { font-size: 0.82rem; letter-spacing: 0.2em; }
-    .banner-sub { font-size: 0.65rem; letter-spacing: 0.25em; }
-
-    .hero-tagline { font-size: 0.72rem; }
-    .hero-cta { font-size: 0.55rem; padding: 0.3rem 1rem; }
-
-    .about-text { font-size: 0.75rem; line-height: 1.65; margin-bottom: 0.5rem; }
-
-    /* Info page - single column stacked */
-    .info-grid { grid-template-columns: 1fr; gap: 0.6rem; }
-    .info-box { padding: 0.6rem 0.7rem; }
-    .info-box-title { font-size: 0.6rem; }
-    .info-row { font-size: 0.75rem; }
-    .info-row span.lbl { font-size: 0.58rem; min-width: 28px; }
-    .logo-box { min-height: 55px; font-size: 0.58rem; }
-
-    /* Team - single column on very small phones, 2 col otherwise */
-    .team-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-    .member-card { padding: 0.6rem 0.4rem; }
-    .member-portrait { width: 44px; height: 44px; }
-    .member-portrait svg { width: 28px; height: 28px; }
-    .member-name { font-size: 0.62rem; }
-    .member-role { font-size: 0.62rem; }
-
-    .label-box { font-size: 0.58rem; padding: 0.1rem 0.6rem; }
-    .torn-menu { width:46px; height:36px; top: 3%; right: 2%; }
-    #page-dots { display: none; }
-  }
+/* ══ PHONE ══ */
+@media(max-width:480px){
+  .page{ min-height:100vh; overflow-x:hidden; padding-top:52px; }
+  #stage-swag{ height:52px; }
+  .page-content{ width:56%; max-width:56%; padding:1rem 0; gap:1.1rem; }
+  .paper{ padding:1.3rem 1rem; gap:0.85rem; clip-path:none; border-radius:1px; }
+  .paper::before{ left:2rem; }
+  .paper::after{ width:32px; height:32px; font-size:0.42rem; bottom:-11px; right:14px; line-height:32px; }
+  .banner{ padding:0.3rem 1rem; }
+  .banner-text{ font-size:0.82rem; letter-spacing:0.22em; }
+  .banner-sub{ font-size:0.64rem; letter-spacing:0.26em; }
+  .hero-tagline{ font-size:0.72rem; }
+  .hero-cta{ font-size:0.56rem; padding:0.32rem 1.1rem; }
+  .about-text{ font-size:0.74rem; line-height:1.72; }
+  .about-text:first-child::before{ display:none; }
+  .team-grid{ gap:0.7rem; }
+  .member-portrait{ width:52px; height:52px; }
+  .member-portrait svg{ width:34px; height:34px; }
+  .member-name{ font-size:0.64rem; }
+  .member-role{ font-size:0.64rem; }
+  .info-grid{ grid-template-columns:1fr; gap:0.6rem; }
+  .info-box{ padding:0.65rem 0.8rem; }
+  .info-box-title{ font-size:0.57rem; }
+  .info-row{ font-size:0.75rem; }
+  .logo-box{ min-height:52px; font-size:0.57rem; }
+  .label-box{ font-size:0.57rem; padding:0.12rem 0.7rem; }
+  .margin-note{ font-size:0.66rem; }
+  .brush-corner,.commission-badge{ display:none; }
+  .palette-strip{ gap:0.3rem; }
+  .palette-dot{ width:7px; height:7px; }
+  .torn-menu{ width:46px; height:36px; top:1%; right:1%; }
+  #page-dots{ display:none; }
+  .nav-link{ font-size:1rem; }
+}
 </style>
 </head>
 <body>
 
+<!-- SVG filters -->
+<svg class="filters"><defs></defs></svg>
+
+<!-- Particle canvas -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- Theater swag -->
 <div id="stage-swag"></div>
 
+<!-- 3-dot menu -->
 <div class="torn-menu" id="tornMenu">
   <span class="dot"></span><span class="dot"></span><span class="dot"></span>
 </div>
 
+<!-- Nav overlay -->
 <div class="nav-overlay" id="navOverlay">
   <button class="close-btn" id="navClose">&times;</button>
-  <a href="#page-hero" class="nav-link"><span class="br">[</span>&nbsp;home&nbsp;<span class="br">]</span></a>
+  <p class="nav-sub">— dream illust. —</p>
+  <a href="#page-hero"  class="nav-link"><span class="br">[</span>&nbsp;home&nbsp;<span class="br">]</span></a>
   <a href="#page-about" class="nav-link"><span class="br">[</span>&nbsp;about&nbsp;<span class="br">]</span></a>
-  <a href="#page-team" class="nav-link"><span class="br">[</span>&nbsp;team&nbsp;<span class="br">]</span></a>
-  <a href="#page-info" class="nav-link"><span class="br">[</span>&nbsp;contact&nbsp;<span class="br">]</span></a>
+  <a href="#page-team"  class="nav-link"><span class="br">[</span>&nbsp;team&nbsp;<span class="br">]</span></a>
+  <a href="#page-info"  class="nav-link"><span class="br">[</span>&nbsp;contact&nbsp;<span class="br">]</span></a>
 </div>
 
+<!-- Page dots -->
 <div id="page-dots">
   <div class="pdot active"></div>
   <div class="pdot"></div>
@@ -373,9 +495,29 @@
   <div class="pdot"></div>
 </div>
 
+<!-- Paintbrush SVG symbol -->
+<svg style="display:none">
+  <symbol id="brush" viewBox="0 0 160 45">
+    <path d="M3 22 Q25 8 65 19 Q100 28 135 12 Q148 7 157 17" stroke="rgba(212,183,86,1)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M0 24 Q6 32 14 24 Q9 16 0 24Z" fill="rgba(212,183,86,0.9)"/>
+    <rect x="146" y="11" width="14" height="8" rx="2" fill="rgba(180,140,60,0.75)"/>
+    <rect x="150" y="9"  width="10" height="4" rx="1" fill="rgba(140,100,40,0.6)"/>
+  </symbol>
+</svg>
+
+<!-- ══ HOME ══ -->
 <div class="page" id="page-hero">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
+  <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-bl"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-br"><svg><use href="#brush"/></svg></div>
+  <!-- Ink splatters -->
+  <svg class="ink-splatter" style="top:18%;left:8%;width:60px;height:50px" viewBox="0 0 60 50"><circle cx="30" cy="25" r="8" fill="rgba(139,18,18,0.8)"/><circle cx="20" cy="18" r="3" fill="rgba(139,18,18,0.6)"/><circle cx="42" cy="15" r="5" fill="rgba(139,18,18,0.5)"/><circle cx="48" cy="35" r="2" fill="rgba(139,18,18,0.4)"/><circle cx="14" cy="38" r="3" fill="rgba(139,18,18,0.5)"/><line x1="30" y1="25" x2="20" y2="18" stroke="rgba(139,18,18,0.3)" stroke-width="1"/><line x1="30" y1="25" x2="42" y2="15" stroke="rgba(139,18,18,0.3)" stroke-width="1"/></svg>
+  <svg class="ink-splatter" style="top:12%;right:9%;width:50px;height:45px" viewBox="0 0 50 45"><circle cx="25" cy="22" r="6" fill="rgba(212,183,86,0.7)"/><circle cx="15" cy="14" r="2" fill="rgba(212,183,86,0.5)"/><circle cx="36" cy="12" r="4" fill="rgba(212,183,86,0.4)"/><circle cx="40" cy="30" r="2" fill="rgba(212,183,86,0.4)"/></svg>
+  <svg class="ink-splatter" style="bottom:22%;left:7%;width:45px;height:40px" viewBox="0 0 45 40"><circle cx="22" cy="20" r="5" fill="rgba(212,183,86,0.65)"/><circle cx="12" cy="12" r="2" fill="rgba(212,183,86,0.45)"/><circle cx="32" cy="10" r="3" fill="rgba(212,183,86,0.4)"/></svg>
+  <svg class="ink-splatter" style="bottom:18%;right:8%;width:55px;height:45px" viewBox="0 0 55 45"><circle cx="27" cy="22" r="7" fill="rgba(139,18,18,0.7)"/><circle cx="16" cy="14" r="3" fill="rgba(139,18,18,0.5)"/><circle cx="40" cy="12" r="4" fill="rgba(139,18,18,0.45)"/><circle cx="44" cy="32" r="2" fill="rgba(139,18,18,0.4)"/></svg>
   <div class="page-content">
     <div class="hero-center">
       <div class="banner">
@@ -383,14 +525,27 @@
         <span class="banner-text banner-sub">ILLUST.</span>
       </div>
       <p class="hero-tagline">Illustrations born from dreams &amp; imagination</p>
+      <!-- Painter's palette dots -->
+      <div class="palette-strip">
+        <div class="palette-dot" style="background:#c94040"></div>
+        <div class="palette-dot" style="background:#d4853a"></div>
+        <div class="palette-dot" style="background:#d4b756"></div>
+        <div class="palette-dot" style="background:#5a9e60"></div>
+        <div class="palette-dot" style="background:#4a6ea8"></div>
+        <div class="palette-dot" style="background:#8a4ea8"></div>
+      </div>
       <a href="#page-about" class="hero-cta">Enter the Stage ↓</a>
     </div>
   </div>
 </div>
 
+<!-- ══ ABOUT ══ -->
 <div class="page" id="page-about">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
+  <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
+  <div class="commission-badge">Open for Commissions</div>
   <div class="page-content">
     <div class="banner">
       <span class="banner-text">DREAM</span>
@@ -398,16 +553,22 @@
     </div>
     <div class="paper">
       <p class="about-text">Dream Illust. is a small creative collective of passionate illustrators based in Cavite, Philippines. We craft stories through art — breathing life into characters, worlds, and feelings that exist just at the edge of imagination.</p>
+      <div class="ink-divider"><span>✦</span></div>
       <p class="about-text">Every piece we create carries a piece of a dream, drawn with intention and shared with love. We believe illustration is more than decoration — it is memory, emotion, and wonder made visible.</p>
+      <div class="ink-divider"><span>✦</span></div>
       <p class="about-text">From personal commissions to collaborative projects, we pour our hearts into every line and color. Welcome to our stage. We hope our work moves you.</p>
+      <p class="margin-note">— est. Cavite, Philippines ✦</p>
       <div class="sec-label"><div class="label-box">About Us</div></div>
     </div>
   </div>
 </div>
 
+<!-- ══ TEAM ══ -->
 <div class="page" id="page-team">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
+  <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
   <div class="page-content">
     <div class="banner">
       <span class="banner-text">DREAM</span>
@@ -416,21 +577,32 @@
     <div class="paper">
       <div class="team-grid">
         <div class="member-card">
-          <div class="member-portrait"><svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#555" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#555" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div class="member-name">Mike</div><div class="member-role">Lead Illustrator</div>
+          <div class="member-portrait">
+            <svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#7a5a30" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#7a5a30" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="member-name">Mike</div>
+          <div class="member-role">Lead Illustrator</div>
         </div>
         <div class="member-card">
-          <div class="member-portrait"><svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#555" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#555" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div class="member-name">Berno</div><div class="member-role">Concept Artist</div>
+          <div class="member-portrait">
+            <svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#7a5a30" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#7a5a30" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="member-name">Berno</div>
+          <div class="member-role">Concept Artist</div>
         </div>
       </div>
+      <p class="margin-note">✦ the artists behind the stage ✦</p>
+      <div class="sec-label"><div class="label-box">Our Team</div></div>
     </div>
   </div>
 </div>
 
+<!-- ══ INFO ══ -->
 <div class="page" id="page-info">
   <div class="curtain-left"></div>
   <div class="curtain-right"></div>
+  <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
+  <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
   <div class="page-content">
     <div class="banner">
       <span class="banner-text">DREAM</span>
@@ -443,95 +615,140 @@
           <div class="info-row"><span class="lbl">IG</span>@dreamillust</div>
           <div class="info-row"><span class="lbl">FB</span>Dream Illust.</div>
           <div class="info-row"><span class="lbl">TWT</span>@dreamillust_</div>
-          <div class="info-box-title" style="margin-top:0.5rem;">Contact</div>
+          <div class="info-box-title" style="margin-top:0.55rem;">Contact</div>
           <div class="info-row">xxx · xxx · xxxx</div>
           <div class="info-row">dreamillust@email.com</div>
         </div>
         <div class="info-box">
           <div class="info-box-title">Location</div>
           <div class="info-row" style="border:none;">Cavite, Philippines</div>
-          <div class="logo-box" style="margin-top:0.5rem;">INSERT<br>LOGO<br>HERE</div>
+          <div class="logo-box" style="margin-top:0.55rem;">INSERT<br>LOGO<br>HERE</div>
         </div>
       </div>
+      <p class="margin-note">open for commissions ✦</p>
       <div class="sec-label"><div class="label-box">Information</div></div>
     </div>
   </div>
 </div>
 
-<footer>© Dream Illust. · Cavite, Philippines · All rights reserved</footer>
+<footer>© Dream Illust. <span>·</span> Cavite, Philippines <span>·</span> All rights reserved</footer>
 
 <script>
-const pages = document.querySelectorAll('.page');
-const dots = document.querySelectorAll('.pdot');
-const OPEN = 80; // % to translate outward when half-open (80% of 50% width = 40% screen hidden, 10% visible)
+/* ── FLOATING DUST PARTICLES ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
 
-function setCurtainsForPage(pageElement, openness) {
-  const cL = pageElement.querySelector('.curtain-left');
-  const cR = pageElement.querySelector('.curtain-right');
-  if (!cL || !cR) return;
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor(){
+      this.reset(true);
+    }
+    reset(init){
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : H + 5;
+      this.r = Math.random() * 1.8 + 0.2;
+      this.vx = (Math.random() - 0.5) * 0.22;
+      this.vy = -(Math.random() * 0.35 + 0.06);
+      this.baseAlpha = Math.random() * 0.55 + 0.08;
+      this.alpha = this.baseAlpha;
+      this.phase = Math.random() * Math.PI * 2;
+      this.isGold = Math.random() > 0.55;
+    }
+    update(t){
+      this.x += this.vx + Math.sin(t * 0.0008 + this.phase) * 0.18;
+      this.y += this.vy;
+      this.alpha = this.baseAlpha * (0.7 + 0.3 * Math.sin(t * 0.002 + this.phase));
+      if(this.y < -5 || this.x < -5 || this.x > W + 5) this.reset(false);
+    }
+    draw(){
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+      ctx.fillStyle = this.isGold
+        ? `rgba(212,183,86,${this.alpha})`
+        : `rgba(245,228,195,${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  for(let i=0;i<70;i++) particles.push(new Particle());
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t++;
+    particles.forEach(p=>{ p.update(t); p.draw(); });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── CURTAIN SYSTEM ── */
+const pages = document.querySelectorAll('.page');
+const dots  = document.querySelectorAll('.pdot');
+const OPEN  = 80; // % translated when open (curtain is 50% wide, 80% translated = 40% off screen)
+
+function setCurtains(page, openness) {
+  const cL = page.querySelector('.curtain-left');
+  const cR = page.querySelector('.curtain-right');
+  if(!cL || !cR) return;
   openness = Math.max(0, Math.min(1, openness));
   const pct = OPEN * openness;
-  cL.style.transform = `translateX(${-pct}%)`; // left moves left (off screen)
-  cR.style.transform = `translateX(${pct}%)`;  // right moves right (off screen)
+  cL.style.transform = `translateX(${-pct}%)`;
+  cR.style.transform = `translateX(${pct}%)`;
 }
 
-function updateCurtains() {
+function updateCurtains(){
   const scrollY = window.scrollY || 0;
-  const pageHeight = window.innerHeight;
-  const pageNum = Math.floor(scrollY / pageHeight);
-  const frac = (scrollY % pageHeight) / pageHeight;
+  const ph = window.innerHeight;
+  const NUMPAGES = pages.length;
+  const lastPage = NUMPAGES - 1;
+  const pageNum = Math.min(Math.floor(scrollY / ph), lastPage);
+  const frac = (scrollY % ph) / ph;
 
   pages.forEach((page, i) => {
-    if (i === pageNum) {
-      // Current page: resting open (1) → fully closed (0) as you scroll away
-      setCurtainsForPage(page, 1 - frac);
-    } else if (i === pageNum + 1) {
-      // Next page: fully closed (0) → resting open (1) as it comes in
-      setCurtainsForPage(page, frac);
-    } else {
-      // All other pages: fully closed
-      setCurtainsForPage(page, 0);
+    if(i === pageNum) {
+      // Last page ALWAYS stays fully open — no closing
+      const openness = (i === lastPage) ? 1 : 1 - frac;
+      setCurtains(page, openness);
     }
+    else if(i === pageNum + 1) setCurtains(page, frac); // opening as it comes in
+    else                       setCurtains(page, 0);     // fully closed
   });
-
-  dots.forEach((d, i) => d.classList.toggle('active', i === Math.round(scrollY / pageHeight)));
+  dots.forEach((d,i) => d.classList.toggle('active', i === Math.round(scrollY/ph)));
 }
 
-window.addEventListener('scroll', updateCurtains, { passive: true });
+window.addEventListener('scroll', updateCurtains, {passive:true});
 
-dots.forEach((d, idx) => {
-  d.addEventListener('click', () => {
-    window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
-  });
+dots.forEach((d,idx) => {
+  d.addEventListener('click', () => window.scrollTo({top: idx * window.innerHeight, behavior:'smooth'}));
 });
 
-document.getElementById('tornMenu').addEventListener('click', () => {
-  document.getElementById('navOverlay').classList.toggle('open');
-});
-document.getElementById('navClose').addEventListener('click', () => {
-  document.getElementById('navOverlay').classList.remove('open');
-});
-document.querySelectorAll('.nav-link').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('navOverlay').classList.remove('open');
-  });
-});
+document.getElementById('tornMenu').addEventListener('click', () =>
+  document.getElementById('navOverlay').classList.toggle('open'));
+document.getElementById('navClose').addEventListener('click', () =>
+  document.getElementById('navOverlay').classList.remove('open'));
+document.querySelectorAll('.nav-link').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('navOverlay').classList.remove('open')));
 
-pages[0] ? setCurtainsForPage(pages[0], 0.5) : null;
-pages.forEach((p, i) => {
-  if (i !== 0) setCurtainsForPage(p, 0);
-});
+/* Init: start fully closed, animate open */
+pages.forEach(p => setCurtains(p, 0));
 setTimeout(() => {
   let start = null;
-  function openAnim(ts) {
-    if (!start) start = ts;
-    const t = Math.min((ts - start) / 1200, 1);
-    const ease = 1 - Math.pow(1 - t, 4);
-    setCurtainsForPage(pages[0], ease * 1); // 0 → 1 (closed → half-open)
-    if (t < 1) requestAnimationFrame(openAnim);
+  function openAnim(ts){
+    if(!start) start = ts;
+    const t = Math.min((ts - start) / 1400, 1);
+    const ease = 1 - Math.pow(1-t, 4);
+    setCurtains(pages[0], ease);
+    if(t < 1) requestAnimationFrame(openAnim);
+    else setCurtains(pages[0], 1);
   }
   requestAnimationFrame(openAnim);
-}, 300);
+}, 500);
 </script>
 </body>
 </html>
