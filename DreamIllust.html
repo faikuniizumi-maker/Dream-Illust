@@ -95,6 +95,9 @@ svg.filters{ position:absolute; width:0; height:0; }
 .curtain-left,.curtain-right{
   position:absolute; top:0; bottom:0;
   width:50%; z-index:100; pointer-events:none; overflow:hidden;
+  will-change:transform;
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
 .curtain-left{
   left:0;
@@ -634,118 +637,130 @@ footer span{ color:rgba(139,18,18,0.5); margin:0 0.4rem; }
 <footer>© Dream Illust. <span>·</span> Cavite, Philippines <span>·</span> All rights reserved</footer>
 
 <script>
-/* ── FLOATING DUST PARTICLES ── */
+/* ── PARTICLES — optimized: 35 particles, pre-cached colors, no per-frame string building ── */
 (function(){
   const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
+  const ctx    = canvas.getContext('2d');
+  let W, H;
 
   function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', resize, {passive:true});
 
-  class Particle {
-    constructor(){
-      this.reset(true);
-    }
-    reset(init){
-      this.x = Math.random() * W;
-      this.y = init ? Math.random() * H : H + 5;
-      this.r = Math.random() * 1.8 + 0.2;
-      this.vx = (Math.random() - 0.5) * 0.22;
-      this.vy = -(Math.random() * 0.35 + 0.06);
-      this.baseAlpha = Math.random() * 0.55 + 0.08;
-      this.alpha = this.baseAlpha;
-      this.phase = Math.random() * Math.PI * 2;
-      this.isGold = Math.random() > 0.55;
-    }
-    update(t){
-      this.x += this.vx + Math.sin(t * 0.0008 + this.phase) * 0.18;
-      this.y += this.vy;
-      this.alpha = this.baseAlpha * (0.7 + 0.3 * Math.sin(t * 0.002 + this.phase));
-      if(this.y < -5 || this.x < -5 || this.x > W + 5) this.reset(false);
-    }
-    draw(){
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-      ctx.fillStyle = this.isGold
-        ? `rgba(212,183,86,${this.alpha})`
-        : `rgba(245,228,195,${this.alpha})`;
-      ctx.fill();
-    }
-  }
+  const COLORS = [
+    'rgba(212,183,86,0.50)','rgba(212,183,86,0.30)','rgba(212,183,86,0.18)',
+    'rgba(228,200,100,0.38)','rgba(245,228,195,0.45)','rgba(245,228,195,0.25)'
+  ];
 
-  for(let i=0;i<70;i++) particles.push(new Particle());
+  const particles = Array.from({length:35}, () => {
+    const p = {};
+    function reset(init){
+      p.x     = Math.random() * W;
+      p.y     = init ? Math.random() * H : H + 5;
+      p.r     = Math.random() * 1.5 + 0.2;
+      p.vx    = (Math.random() - 0.5) * 0.18;
+      p.vy    = -(Math.random() * 0.28 + 0.05);
+      p.phase = Math.random() * Math.PI * 2;
+      p.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    }
+    p.reset = reset;
+    reset(true);
+    return p;
+  });
 
   let t = 0;
   function draw(){
-    ctx.clearRect(0,0,W,H);
+    ctx.clearRect(0, 0, W, H);
     t++;
-    particles.forEach(p=>{ p.update(t); p.draw(); });
+    for(let i = 0; i < particles.length; i++){
+      const p = particles[i];
+      p.x += p.vx + Math.sin(t * 0.0007 + p.phase) * 0.14;
+      p.y += p.vy;
+      if(p.y < -5 || p.x < -5 || p.x > W + 5) p.reset(false);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    }
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-/* ── CURTAIN SYSTEM ── */
-const pages = document.querySelectorAll('.page');
-const dots  = document.querySelectorAll('.pdot');
-const OPEN  = 80; // % translated when open (curtain is 50% wide, 80% translated = 40% off screen)
+/* ── CURTAIN SYSTEM — optimized ── */
+const pages    = Array.from(document.querySelectorAll('.page'));
+const dots     = Array.from(document.querySelectorAll('.pdot'));
+const OPEN     = 80;
+const lastIdx  = pages.length - 1;
 
-function setCurtains(page, openness) {
-  const cL = page.querySelector('.curtain-left');
-  const cR = page.querySelector('.curtain-right');
-  if(!cL || !cR) return;
-  openness = Math.max(0, Math.min(1, openness));
-  const pct = OPEN * openness;
-  cL.style.transform = `translateX(${-pct}%)`;
-  cR.style.transform = `translateX(${pct}%)`;
+// Cache curtain elements ONCE — never query DOM during scroll
+const C = pages.map(pg => ({
+  L: pg.querySelector('.curtain-left'),
+  R: pg.querySelector('.curtain-right')
+}));
+
+// Store last applied transform per curtain to skip redundant style writes
+const lastPct = new Float32Array(pages.length).fill(-1);
+
+function setCurtains(i, openness){
+  if(openness < 0) openness = 0;
+  if(openness > 1) openness = 1;
+  const pct = (OPEN * openness + 0.5) | 0; // integer rounding — avoids sub-pixel jitter
+  if(lastPct[i] === pct) return;            // skip if nothing changed
+  lastPct[i] = pct;
+  C[i].L.style.transform = `translateX(${-pct}%)`;
+  C[i].R.style.transform = `translateX(${pct}%)`;
 }
 
-function updateCurtains(){
+// rAF throttle — scroll fires ~200/s on mobile, screen only refreshes 60/s
+let ticking = false;
+function onScroll(){
+  if(!ticking){ ticking = true; requestAnimationFrame(tick); }
+}
+
+function tick(){
+  ticking = false;
   const scrollY = window.scrollY || 0;
-  const ph = window.innerHeight;
-  const NUMPAGES = pages.length;
-  const lastPage = NUMPAGES - 1;
-  const pageNum = Math.min(Math.floor(scrollY / ph), lastPage);
-  const frac = (scrollY % ph) / ph;
+  const ph      = window.innerHeight;
+  const pageNum = Math.min((scrollY / ph) | 0, lastIdx);
+  const frac    = (scrollY % ph) / ph;
 
-  pages.forEach((page, i) => {
-    if(i === pageNum) {
-      // Last page ALWAYS stays fully open — no closing
-      const openness = (i === lastPage) ? 1 : 1 - frac;
-      setCurtains(page, openness);
-    }
-    else if(i === pageNum + 1) setCurtains(page, frac); // opening as it comes in
-    else                       setCurtains(page, 0);     // fully closed
-  });
-  dots.forEach((d,i) => d.classList.toggle('active', i === Math.round(scrollY/ph)));
+  for(let i = 0; i < pages.length; i++){
+    if(i === pageNum)       setCurtains(i, i === lastIdx ? 1 : 1 - frac);
+    else if(i === pageNum + 1) setCurtains(i, frac);
+    else                    setCurtains(i, 0);
+  }
+
+  const active = Math.round(scrollY / ph);
+  for(let i = 0; i < dots.length; i++)
+    dots[i].classList.toggle('active', i === active);
 }
 
-window.addEventListener('scroll', updateCurtains, {passive:true});
+window.addEventListener('scroll', onScroll, {passive:true});
 
-dots.forEach((d,idx) => {
-  d.addEventListener('click', () => window.scrollTo({top: idx * window.innerHeight, behavior:'smooth'}));
-});
+dots.forEach((d, idx) =>
+  d.addEventListener('click', () =>
+    window.scrollTo({top: idx * window.innerHeight, behavior:'smooth'})));
 
 document.getElementById('tornMenu').addEventListener('click', () =>
   document.getElementById('navOverlay').classList.toggle('open'));
 document.getElementById('navClose').addEventListener('click', () =>
   document.getElementById('navOverlay').classList.remove('open'));
 document.querySelectorAll('.nav-link').forEach(a =>
-  a.addEventListener('click', () => document.getElementById('navOverlay').classList.remove('open')));
+  a.addEventListener('click', () =>
+    document.getElementById('navOverlay').classList.remove('open')));
 
-/* Init: start fully closed, animate open */
-pages.forEach(p => setCurtains(p, 0));
+/* Init — all closed, then animate page 0 open */
+for(let i = 0; i < pages.length; i++) setCurtains(i, 0);
 setTimeout(() => {
   let start = null;
   function openAnim(ts){
     if(!start) start = ts;
-    const t = Math.min((ts - start) / 1400, 1);
-    const ease = 1 - Math.pow(1-t, 4);
-    setCurtains(pages[0], ease);
+    const t    = Math.min((ts - start) / 1400, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    setCurtains(0, ease);
     if(t < 1) requestAnimationFrame(openAnim);
-    else setCurtains(pages[0], 1);
+    else setCurtains(0, 1);
   }
   requestAnimationFrame(openAnim);
 }, 500);
