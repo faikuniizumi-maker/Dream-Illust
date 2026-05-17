@@ -345,7 +345,88 @@ body { background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); 
 .label-box { border:1px solid rgba(180,150,90,0.4); padding:0.2rem 1rem; font-family:'Special Elite',serif; font-size:0.6rem; letter-spacing:0.2em; color:#7a5a30; text-transform:uppercase; background:rgba(212,183,86,0.07); }
 .sec-label { margin-top:0.5rem; display:flex; justify-content:center; }
 
-/* ── TORN MENU — always on top ── */
+/* ══════════════════════════════════════
+   ANIMATION SYSTEM
+══════════════════════════════════════ */
+
+/* ── Banner drop-in ── */
+@keyframes bannerDrop {
+  0%   { opacity:0; transform:translateY(-22px); }
+  60%  { transform:translateY(4px); }
+  80%  { transform:translateY(-2px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+/* ── Banner gold pulse ── */
+@keyframes bannerPulse {
+  0%,100% { box-shadow:4px 6px 24px rgba(0,0,0,0.5), 0 0 0 4px rgba(0,0,0,0.12), 0 0 0 rgba(212,183,86,0); }
+  50%     { box-shadow:4px 6px 24px rgba(0,0,0,0.5), 0 0 0 4px rgba(0,0,0,0.12), 0 0 18px rgba(212,183,86,0.22); }
+}
+/* ── Text paragraph fade up ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+/* ── Ink divider draw ── */
+@keyframes drawLine {
+  from { transform:scaleX(0); }
+  to   { transform:scaleX(1); }
+}
+/* ── Palette dot bounce in ── */
+@keyframes dotBounce {
+  0%   { opacity:0; transform:translateY(-12px) scale(0.4); }
+  60%  { transform:translateY(3px) scale(1.15); }
+  80%  { transform:translateY(-2px) scale(0.95); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+/* ── Card flip ── */
+@keyframes cardFlip {
+  0%   { opacity:0; transform:perspective(600px) rotateY(-90deg) scale(0.9); }
+  60%  { transform:perspective(600px) rotateY(8deg) scale(1.02); }
+  80%  { transform:perspective(600px) rotateY(-3deg) scale(0.99); }
+  100% { opacity:1; transform:perspective(600px) rotateY(0deg) scale(1); }
+}
+/* ── CTA shimmer sweep ── */
+@keyframes ctaShimmer {
+  0%   { background-position:-200% center; }
+  100% { background-position:200% center; }
+}
+
+/* Default hidden state for animated elements */
+.anim-banner { opacity:0; }
+.anim-text   { opacity:0; }
+.anim-divider::before,
+.anim-divider::after { transform-origin:left; transform:scaleX(0); }
+.anim-dot    { opacity:0; }
+.anim-card   { opacity:0; }
+.anim-badge  { opacity:0; }
+
+/* Active (triggered) states */
+.anim-banner.go {
+  animation: bannerDrop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards,
+             bannerPulse 3.5s ease-in-out 1.2s infinite;
+}
+.anim-text.go {
+  animation: fadeUp 0.6s ease forwards;
+}
+.anim-divider.go::before,
+.anim-divider.go::after {
+  animation: drawLine 0.7s ease forwards;
+}
+.anim-dot.go {
+  animation: dotBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+.anim-card.go {
+  animation: cardFlip 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+.anim-badge.go {
+  animation: fadeUp 0.5s ease forwards;
+}
+
+/* CTA button continuous shimmer */
+.hero-cta-shimmer {
+  background-size:200% auto;
+  animation: ctaShimmer 3s linear infinite;
+}
 .torn-menu {
   position:fixed; top:1.5%; right:1.5%; z-index:999;
   width:56px; height:44px; background:var(--cream);
@@ -485,20 +566,20 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
       <svg class="ink-splatter" style="bottom:16%;right:4%;width:52px;height:42px" viewBox="0 0 55 45"><circle cx="27" cy="22" r="7" fill="rgba(139,18,18,0.7)"/><circle cx="16" cy="14" r="3" fill="rgba(139,18,18,0.5)"/><circle cx="40" cy="12" r="4" fill="rgba(139,18,18,0.45)"/></svg>
       <div class="page-content">
         <div class="hero-center">
-          <div class="banner">
-            <span class="banner-text">DREAM</span>
-            <span class="banner-text banner-sub">ILLUST.</span>
+          <div class="banner anim-banner" id="hero-banner">
+            <span class="banner-text" id="typewriter-line1"></span>
+            <span class="banner-text banner-sub" id="typewriter-line2"></span>
           </div>
-          <p class="hero-tagline">Illustrations born from dreams &amp; imagination</p>
+          <p class="hero-tagline anim-text" style="animation-delay:0.1s">Illustrations born from dreams &amp; imagination</p>
           <div class="palette-strip">
-            <div class="palette-dot" style="background:#c94040"></div>
-            <div class="palette-dot" style="background:#d4853a"></div>
-            <div class="palette-dot" style="background:#d4b756"></div>
-            <div class="palette-dot" style="background:#5a9e60"></div>
-            <div class="palette-dot" style="background:#4a6ea8"></div>
-            <div class="palette-dot" style="background:#8a4ea8"></div>
+            <div class="palette-dot anim-dot" style="background:#c94040"></div>
+            <div class="palette-dot anim-dot" style="background:#d4853a;animation-delay:0.08s"></div>
+            <div class="palette-dot anim-dot" style="background:#d4b756;animation-delay:0.16s"></div>
+            <div class="palette-dot anim-dot" style="background:#5a9e60;animation-delay:0.24s"></div>
+            <div class="palette-dot anim-dot" style="background:#4a6ea8;animation-delay:0.32s"></div>
+            <div class="palette-dot anim-dot" style="background:#8a4ea8;animation-delay:0.40s"></div>
           </div>
-          <a class="hero-cta" data-goto="1">Enter the Stage ↓</a>
+          <a class="hero-cta anim-text" style="animation-delay:0.2s" data-goto="1">Enter the Stage ↓</a>
         </div>
       </div>
     </div>
@@ -508,18 +589,18 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
       <div class="page-content">
-        <div class="banner">
+        <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
           <span class="banner-text banner-sub">ILLUST.</span>
         </div>
-        <div class="commission-badge">Open for Commissions</div>
+        <div class="commission-badge anim-badge">Open for Commissions</div>
         <div class="paper">
-          <p class="about-text">Dream Illust. is a small creative collective of passionate illustrators based in Cavite, Philippines. We craft stories through art — breathing life into characters, worlds, and feelings that exist just at the edge of imagination.</p>
-          <div class="ink-divider"><span>✦</span></div>
-          <p class="about-text">Every piece we create carries a piece of a dream, drawn with intention and shared with love. We believe illustration is more than decoration — it is memory, emotion, and wonder made visible.</p>
-          <div class="ink-divider"><span>✦</span></div>
-          <p class="about-text">From personal commissions to collaborative projects, we pour our hearts into every line and color. Welcome to our stage. We hope our work moves you.</p>
-          <p class="margin-note">— est. Cavite, Philippines ✦</p>
+          <p class="about-text anim-text">Dream Illust. is a small creative collective of passionate illustrators based in Cavite, Philippines. We craft stories through art — breathing life into characters, worlds, and feelings that exist just at the edge of imagination.</p>
+          <div class="ink-divider anim-divider"><span>✦</span></div>
+          <p class="about-text anim-text">Every piece we create carries a piece of a dream, drawn with intention and shared with love. We believe illustration is more than decoration — it is memory, emotion, and wonder made visible.</p>
+          <div class="ink-divider anim-divider"><span>✦</span></div>
+          <p class="about-text anim-text">From personal commissions to collaborative projects, we pour our hearts into every line and color. Welcome to our stage. We hope our work moves you.</p>
+          <p class="margin-note anim-text">— est. Cavite, Philippines ✦</p>
           <div class="sec-label"><div class="label-box">About Us</div></div>
         </div>
       </div>
@@ -530,24 +611,24 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
       <div class="page-content">
-        <div class="banner">
+        <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
           <span class="banner-text banner-sub">ILLUST.</span>
         </div>
         <div class="paper">
           <div class="team-grid">
-            <div class="member-card">
+            <div class="member-card anim-card">
               <div class="member-portrait"><svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#7a5a30" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#7a5a30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
               <div class="member-name">Mike</div>
               <div class="member-role">Lead Illustrator</div>
             </div>
-            <div class="member-card">
+            <div class="member-card anim-card" style="animation-delay:0.15s">
               <div class="member-portrait"><svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="18" r="10" stroke="#7a5a30" stroke-width="1.5"/><path d="M5 48c0-11 9-18 20-18s20 7 20 18" stroke="#7a5a30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
               <div class="member-name">Berno</div>
               <div class="member-role">Concept Artist</div>
             </div>
           </div>
-          <p class="margin-note">✦ the artists behind the stage ✦</p>
+          <p class="margin-note anim-text" style="animation-delay:0.35s">✦ the artists behind the stage ✦</p>
           <div class="sec-label"><div class="label-box">Our Team</div></div>
         </div>
       </div>
@@ -558,7 +639,7 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
       <div class="page-content">
-        <div class="banner">
+        <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
           <span class="banner-text banner-sub">ILLUST.</span>
         </div>
@@ -708,41 +789,14 @@ window.addEventListener('resize', () => {
   cR.style.transform = `translateX(${op}%)`;
 }, {passive:true});
 
-/* ── Wheel navigation ── */
+/* ── Touch start tracking ── */
 let wheelCooldown = false;
-window.addEventListener('wheel', e => {
-  if(isAnimating || wheelCooldown) return;
-  wheelCooldown = true;
-  setTimeout(() => wheelCooldown = false, 820);
-  lastInteract = performance.now();
-  goTo(currentPage + (e.deltaY > 0 ? 1 : -1));
-}, {passive:true});
-
-/* ── Touch swipe navigation ── */
-let touchStartY = 0;
+let touchStartY   = 0;
 window.addEventListener('touchstart', e => {
   touchStartY = e.touches[0].clientY;
   lastInteract = performance.now();
 }, {passive:true});
-window.addEventListener('touchend', e => {
-  const diff = touchStartY - e.changedTouches[0].clientY;
-  if(Math.abs(diff) > 45 && !isAnimating) goTo(currentPage + (diff > 0 ? 1 : -1));
-}, {passive:true});
 
-/* ── Keyboard navigation ── */
-window.addEventListener('keydown', e => {
-  if(e.key === 'ArrowDown' || e.key === 'PageDown') goTo(currentPage + 1);
-  if(e.key === 'ArrowUp'   || e.key === 'PageUp'  ) goTo(currentPage - 1);
-});
-
-/* ── Click handlers — dots, nav links, CTAs ── */
-document.querySelectorAll('[data-goto]').forEach(el => {
-  el.addEventListener('click', () => {
-    const n = parseInt(el.dataset.goto);
-    goTo(n);
-    navOverlay.classList.remove('open');
-  });
-});
 document.getElementById('tornMenu').addEventListener('click', () => navOverlay.classList.toggle('open'));
 document.getElementById('navClose').addEventListener('click', () => navOverlay.classList.remove('open'));
 
@@ -769,12 +823,159 @@ function swayLoop(){
   requestAnimationFrame(swayLoop);
 }
 
-/* ── INTRO ANIMATION — curtains close then open once ── */
+/* ─────────────────────────────────────────────────
+   ANIMATION SYSTEM
+   Triggers per-page animations when page becomes active.
+   Resets when leaving so re-entering replays them.
+───────────────────────────────────────────────────*/
+
+// Typewriter config
+const TW_LINE1 = 'DREAM';
+const TW_LINE2 = 'ILLUST.';
+const TW_SPEED = 95; // ms per character
+let twTimer    = null;
+
+function clearTypewriter(){
+  clearTimeout(twTimer);
+  const l1 = document.getElementById('typewriter-line1');
+  const l2 = document.getElementById('typewriter-line2');
+  if(l1) l1.textContent = '';
+  if(l2) l2.textContent = '';
+}
+
+function runTypewriter(delay){
+  clearTypewriter();
+  const l1 = document.getElementById('typewriter-line1');
+  const l2 = document.getElementById('typewriter-line2');
+  if(!l1 || !l2) return;
+
+  let i = 0;
+  const full = TW_LINE1 + '|' + TW_LINE2; // pipe = separator between lines
+
+  function type(){
+    if(i < TW_LINE1.length){
+      l1.textContent = TW_LINE1.slice(0, i + 1);
+    } else {
+      const j = i - TW_LINE1.length;
+      l2.textContent = TW_LINE2.slice(0, j + 1);
+    }
+    i++;
+    if(i < TW_LINE1.length + TW_LINE2.length){
+      twTimer = setTimeout(type, TW_SPEED);
+    }
+  }
+  twTimer = setTimeout(type, delay);
+}
+
+function resetPage(pageEl){
+  // Remove all .go classes — re-entering page will replay animations
+  pageEl.querySelectorAll('.anim-banner,.anim-text,.anim-divider,.anim-dot,.anim-card,.anim-badge')
+    .forEach(el => el.classList.remove('go'));
+}
+
+function triggerPage(pageIdx, delay){
+  const page = pages[pageIdx];
+  if(!page) return;
+
+  const after = (ms, fn) => setTimeout(fn, delay + ms);
+
+  // Banner drops in on every page
+  after(0, () => {
+    page.querySelectorAll('.anim-banner').forEach(el => {
+      el.style.animationDelay = '0s';
+      el.classList.add('go');
+    });
+  });
+
+  if(pageIdx === 0){
+    // HOME — typewriter + staggered palette dots + CTA
+    runTypewriter(delay + 200);
+    const dots = page.querySelectorAll('.anim-dot');
+    dots.forEach((d, i) => after(900 + i * 85, () => d.classList.add('go')));
+    after(1050, () => page.querySelectorAll('.anim-text').forEach(el => el.classList.add('go')));
+  }
+
+  if(pageIdx === 1){
+    // ABOUT — badge + staggered paragraphs + dividers
+    after(200, () => page.querySelectorAll('.anim-badge').forEach(el => el.classList.add('go')));
+    const texts    = Array.from(page.querySelectorAll('.anim-text'));
+    const dividers = Array.from(page.querySelectorAll('.anim-divider'));
+    let   t = 350;
+    // Interleave: para → divider → para → divider → para
+    texts.forEach((txt, i) => {
+      after(t, () => txt.classList.add('go'));
+      t += 320;
+      if(dividers[i]){
+        after(t, () => dividers[i].classList.add('go'));
+        t += 200;
+      }
+    });
+  }
+
+  if(pageIdx === 2){
+    // TEAM — card flips staggered
+    const cards = Array.from(page.querySelectorAll('.anim-card'));
+    cards.forEach((c, i) => after(180 + i * 160, () => c.classList.add('go')));
+    after(180 + cards.length * 160, () => {
+      page.querySelectorAll('.anim-text').forEach(el => el.classList.add('go'));
+    });
+  }
+
+  if(pageIdx === 3){
+    // INFO — nothing extra, banner handles it
+  }
+}
+
+/* Patch goTo to trigger animations */
+const _goTo = goTo;
+function goToWithAnim(n, instant){
+  const prev = currentPage;
+  _goTo(n, instant);
+  if(!instant && n !== prev){
+    // Reset leaving page after transition completes
+    setTimeout(() => resetPage(pages[prev]), 800);
+    // Trigger arriving page animations
+    triggerPage(n, 120);
+  }
+}
+
+// Override goTo references
+document.querySelectorAll('[data-goto]').forEach(el => {
+  el.addEventListener('click', () => {
+    goToWithAnim(parseInt(el.dataset.goto));
+    navOverlay.classList.remove('open');
+  });
+});
+
+// Re-bind wheel to use goToWithAnim
+window.addEventListener('wheel', e => {
+  if(isAnimating || wheelCooldown) return;
+  wheelCooldown = true;
+  setTimeout(() => wheelCooldown = false, 820);
+  lastInteract = performance.now();
+  goToWithAnim(currentPage + (e.deltaY > 0 ? 1 : -1));
+}, {passive:true});
+
+// Re-bind touch to use goToWithAnim
+window.addEventListener('touchend', e => {
+  const diff = touchStartY - e.changedTouches[0].clientY;
+  if(Math.abs(diff) > 45 && !isAnimating) goToWithAnim(currentPage + (diff > 0 ? 1 : -1));
+}, {passive:true});
+
+// Re-bind keyboard
+window.addEventListener('keydown', e => {
+  if(e.key === 'ArrowDown' || e.key === 'PageDown') goToWithAnim(currentPage + 1);
+  if(e.key === 'ArrowUp'   || e.key === 'PageUp'  ) goToWithAnim(currentPage - 1);
+});
+
 function init(){
   setPageHeights();
   goTo(0, true);
 
-  // Start fully closed
+  // All pages start hidden
+  pages.forEach(p => resetPage(p));
+
+  // Curtains start fully closed
   cL.style.transition = 'none';
   cR.style.transition = 'none';
   cL.style.transform  = 'translateX(0%)';
@@ -786,7 +987,7 @@ function init(){
     function introAnim(ts){
       if(!start) start = ts;
       const t    = Math.min((ts - start) / 1500, 1);
-      const ease = 1 - Math.pow(1 - t, 4); // ease-out quartic
+      const ease = 1 - Math.pow(1 - t, 4);
       cL.style.transform = `translateX(${(-op * ease).toFixed(2)}%)`;
       cR.style.transform = `translateX(${(op  * ease).toFixed(2)}%)`;
       if(t < 1){
@@ -794,8 +995,10 @@ function init(){
       } else {
         cL.style.transform = `translateX(${-op}%)`;
         cR.style.transform = `translateX(${op}%)`;
-        lastInteract = performance.now() - 1500; // trigger sway quickly after intro
+        lastInteract = performance.now() - 1500;
         requestAnimationFrame(swayLoop);
+        // Fire page 0 animations after curtains open
+        triggerPage(0, 0);
       }
     }
     requestAnimationFrame(introAnim);
