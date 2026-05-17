@@ -404,9 +404,11 @@ body { background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); 
 .anim-banner.go {
   animation: bannerDrop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards,
              bannerPulse 3.5s ease-in-out 1.2s infinite;
+  opacity:1; /* ensure stays visible even if animation glitches */
 }
 .anim-text.go {
   animation: fadeUp 0.6s ease forwards;
+  opacity:1;
 }
 .anim-divider.go::before,
 .anim-divider.go::after {
@@ -414,12 +416,92 @@ body { background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); 
 }
 .anim-dot.go {
   animation: dotBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  opacity:1;
 }
 .anim-card.go {
   animation: cardFlip 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  opacity:1;
 }
 .anim-badge.go {
   animation: fadeUp 0.5s ease forwards;
+  opacity:1;
+}
+
+/* ── NAV ARROWS — ultra-slim edge tabs, never covers content ── */
+.nav-arrow {
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  z-index:15;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  cursor:pointer;
+  background:linear-gradient(180deg, rgba(10,4,2,0.82), rgba(30,8,4,0.82));
+  border:1px solid rgba(212,183,86,0.35);
+  border-top:none;
+  padding:0.18rem 1.4rem;
+  pointer-events:all;
+  width:auto; min-width:90px;
+  opacity:0;
+  transition:border-color 0.2s, background 0.2s;
+}
+.nav-arrow:hover {
+  background:linear-gradient(180deg, rgba(50,15,5,0.92), rgba(30,8,4,0.92));
+  border-color:rgba(212,183,86,0.75);
+}
+.nav-arrow svg {
+  width:14px; height:9px;
+  stroke:rgba(212,183,86,0.85); stroke-width:2.2;
+  fill:none; stroke-linecap:round; stroke-linejoin:round;
+  flex-shrink:0;
+}
+.nav-arrow span {
+  font-family:'Special Elite',serif;
+  font-size:0.42rem; letter-spacing:0.22em;
+  color:rgba(212,183,86,0.75); text-transform:uppercase;
+  white-space:nowrap; line-height:1;
+}
+
+/* DOWN tab — hangs from bottom edge, border on top */
+.nav-arrow.arrow-down {
+  bottom:0; border-top:1px solid rgba(212,183,86,0.35);
+  border-bottom:none; border-radius:0;
+  flex-direction:row; /* chevron left, label right */
+  animation:tabBobDown 2.4s ease-in-out 2s infinite;
+}
+@keyframes tabBobDown {
+  0%,100%{ opacity:0; transform:translateX(-50%) translateY(0); }
+  20%    { opacity:1; transform:translateX(-50%) translateY(0); }
+  55%    { opacity:1; transform:translateX(-50%) translateY(3px); }
+  80%    { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+
+/* UP tab — sits at top edge, border on bottom */
+.nav-arrow.arrow-up {
+  top:0; border-bottom:1px solid rgba(212,183,86,0.35);
+  border-top:none; border-radius:0;
+  flex-direction:row-reverse; /* label left, chevron right */
+  animation:tabBobUp 2.4s ease-in-out 2s infinite;
+}
+@keyframes tabBobUp {
+  0%,100%{ opacity:0; transform:translateX(-50%) translateY(0); }
+  20%    { opacity:1; transform:translateX(-50%) translateY(0); }
+  55%    { opacity:1; transform:translateX(-50%) translateY(-3px); }
+  80%    { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+
+/* ── END TEXT — last page ── */
+.end-text {
+  position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+  font-family:'Caveat',cursive; font-size:0.68rem;
+  color:rgba(212,183,86,0.45); letter-spacing:0.26em;
+  white-space:nowrap; pointer-events:none;
+  animation:endPulse 3s ease-in-out 1.2s infinite;
+}
+.end-text::before, .end-text::after {
+  content:' — '; color:rgba(139,18,18,0.45);
+}
+@keyframes endPulse {
+  0%,100%{ opacity:0.25; }
+  50%    { opacity:0.85; }
 }
 
 /* CTA button continuous shimmer */
@@ -560,6 +642,10 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-bl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-br"><svg><use href="#brush"/></svg></div>
+      <button class="nav-arrow arrow-down" data-goto="1">
+        <svg viewBox="0 0 22 14"><polyline points="2,2 11,12 20,2"/></svg>
+        <span>scroll</span>
+      </button>
       <svg class="ink-splatter" style="top:16%;left:4%;width:55px;height:48px" viewBox="0 0 60 50"><circle cx="30" cy="25" r="8" fill="rgba(139,18,18,0.8)"/><circle cx="20" cy="18" r="3" fill="rgba(139,18,18,0.6)"/><circle cx="42" cy="15" r="5" fill="rgba(139,18,18,0.5)"/><circle cx="48" cy="35" r="2" fill="rgba(139,18,18,0.4)"/><line x1="30" y1="25" x2="20" y2="18" stroke="rgba(139,18,18,0.3)" stroke-width="1"/><line x1="30" y1="25" x2="42" y2="15" stroke="rgba(139,18,18,0.3)" stroke-width="1"/></svg>
       <svg class="ink-splatter" style="top:10%;right:4%;width:48px;height:42px" viewBox="0 0 50 45"><circle cx="25" cy="22" r="6" fill="rgba(212,183,86,0.7)"/><circle cx="15" cy="14" r="2" fill="rgba(212,183,86,0.5)"/><circle cx="36" cy="12" r="4" fill="rgba(212,183,86,0.4)"/></svg>
       <svg class="ink-splatter" style="bottom:18%;left:4%;width:42px;height:38px" viewBox="0 0 45 40"><circle cx="22" cy="20" r="5" fill="rgba(212,183,86,0.65)"/><circle cx="12" cy="12" r="2" fill="rgba(212,183,86,0.45)"/><circle cx="32" cy="10" r="3" fill="rgba(212,183,86,0.4)"/></svg>
@@ -588,6 +674,14 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
     <div class="page" id="page-about">
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
+      <button class="nav-arrow arrow-up" data-goto="0">
+        <svg viewBox="0 0 22 14"><polyline points="2,12 11,2 20,12"/></svg>
+        <span>home</span>
+      </button>
+      <button class="nav-arrow arrow-down" data-goto="2">
+        <svg viewBox="0 0 22 14"><polyline points="2,2 11,12 20,2"/></svg>
+        <span>team</span>
+      </button>
       <div class="page-content">
         <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
@@ -610,6 +704,14 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
     <div class="page" id="page-team">
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
+      <button class="nav-arrow arrow-up" data-goto="1">
+        <svg viewBox="0 0 22 14"><polyline points="2,12 11,2 20,12"/></svg>
+        <span>about</span>
+      </button>
+      <button class="nav-arrow arrow-down" data-goto="3">
+        <svg viewBox="0 0 22 14"><polyline points="2,2 11,12 20,2"/></svg>
+        <span>info</span>
+      </button>
       <div class="page-content">
         <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
@@ -638,6 +740,11 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
     <div class="page" id="page-info">
       <div class="brush-corner brush-tl"><svg><use href="#brush"/></svg></div>
       <div class="brush-corner brush-tr"><svg><use href="#brush"/></svg></div>
+      <button class="nav-arrow arrow-up" data-goto="2">
+        <svg viewBox="0 0 22 14"><polyline points="2,12 11,2 20,12"/></svg>
+        <span>team</span>
+      </button>
+      <div class="end-text">end of stage</div>
       <div class="page-content">
         <div class="banner anim-banner">
           <span class="banner-text">DREAM</span>
@@ -868,9 +975,21 @@ function runTypewriter(delay){
 }
 
 function resetPage(pageEl){
-  // Remove all .go classes — re-entering page will replay animations
   pageEl.querySelectorAll('.anim-banner,.anim-text,.anim-divider,.anim-dot,.anim-card,.anim-badge')
-    .forEach(el => el.classList.remove('go'));
+    .forEach(el => {
+      el.classList.remove('go');
+      void el.offsetWidth;
+    });
+  if(pageEl.id === 'page-hero') clearTypewriter();
+  // Reset info page row animations
+  if(pageEl.id === 'page-info'){
+    pageEl.querySelectorAll('.info-row, .info-box-title, .margin-note, .logo-box')
+      .forEach(el => {
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+      });
+  }
 }
 
 function triggerPage(pageIdx, delay){
@@ -922,7 +1041,18 @@ function triggerPage(pageIdx, delay){
   }
 
   if(pageIdx === 3){
-    // INFO — nothing extra, banner handles it
+    // INFO — info rows fade in staggered after banner
+    const rows = Array.from(page.querySelectorAll('.info-row, .info-box-title, .margin-note, .logo-box'));
+    rows.forEach((row, i) => {
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(10px)';
+      row.style.transition = 'none';
+      after(300 + i * 60, () => {
+        row.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        row.style.opacity = '1';
+        row.style.transform = 'translateY(0)';
+      });
+    });
   }
 }
 
