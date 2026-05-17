@@ -30,7 +30,7 @@ body { background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); 
 /* ── SWAG BACKING — fills gap behind clip-path, no black exposed ── */
 #stage-swag-fill {
   position:fixed; top:0; left:0; right:0; height:var(--swag-h);
-  background:linear-gradient(180deg, #6b0e0e 0%, #8B1212 60%, #7a1010 100%);
+  background:#8B1212;
   z-index:108; pointer-events:none;
 }
 
@@ -243,12 +243,7 @@ body { background:var(--stage); font-family:'Caveat',cursive; color:var(--ink); 
     10.5% 100%,9% 99.1%,7.5% 100%,6% 99.3%,4.5% 100%,3% 99.1%,1.5% 100%,0% 99.2%
   );
 }
-/* Left margin red line */
-.paper::before {
-  content:''; position:absolute; top:0; bottom:0; left:2.6rem; width:1px;
-  background:linear-gradient(180deg, transparent 5%, rgba(139,18,18,0.15) 15%, rgba(139,18,18,0.15) 85%, transparent 95%);
-  pointer-events:none;
-}
+/* Left margin line removed — was visually off */
 /* Wax seal */
 .paper::after {
   content:'D.I.';
@@ -424,7 +419,6 @@ footer span { color:rgba(139,18,18,0.5); margin:0 0.4rem; }
   .page{ padding:0.4rem 0; }
   .page-content{ width:92%; max-width:100%; padding:0.3rem 0 0.5rem; gap:0.55rem; }
   .paper{ padding:1rem 0.85rem; gap:0.5rem; clip-path:none; }
-  .paper::before{ left:1.6rem; }
   .paper::after{ width:28px; height:28px; font-size:0.38rem; bottom:-10px; right:10px; line-height:28px; }
   .banner{ padding:0.28rem 0.85rem; }
   .banner-text{ font-size:0.78rem; letter-spacing:0.2em; }
